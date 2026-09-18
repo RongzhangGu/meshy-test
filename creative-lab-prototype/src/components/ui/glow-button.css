@@ -1,0 +1,37 @@
+.glow-btn {
+  --glow-color:#b7ff28;
+  position:relative;
+  isolation:isolate;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:12px 24px;
+  border:2px solid transparent;
+  border-radius:12px;
+  color:#101500;
+  background:linear-gradient(180deg,#caff61 0%,#b7ff28 58%,#adff23 100%) padding-box,
+    linear-gradient(135deg,#f3ffd6,#dcff96 34%,#8ccc22 72%,#eaffb8) border-box;
+  box-shadow:inset 0 1px 0 #ffffffb3,0 3px 12px color-mix(in srgb,var(--glow-color) 10%,transparent);
+  font:inherit;
+  font-weight:700;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:box-shadow .2s ease,transform .15s ease;
+}
+.glow-btn::before { content:''; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(180deg,#f3ff78,#c7ff39); opacity:0; pointer-events:none; transition:opacity .2s ease; }
+.glow-btn__label { position:relative; z-index:1; display:flex; align-items:center; justify-content:center; gap:inherit; width:100%; height:100%; pointer-events:none; }
+.glow-btn:not(:disabled):focus-visible,button:focus-visible .glow-btn { box-shadow:inset 0 1px 0 #ffffffcc,0 0 20px color-mix(in srgb,var(--glow-color) 32%,transparent),0 5px 14px color-mix(in srgb,var(--glow-color) 18%,transparent); }
+.glow-btn:not(:disabled):focus-visible::before,button:focus-visible .glow-btn::before { opacity:1; }
+.glow-btn:focus-visible { outline:2px solid var(--glow-color); outline-offset:4px; }
+@media(hover:hover) {
+  .glow-btn:not(:disabled):hover { box-shadow:inset 0 1px 0 #ffffffcc,0 0 20px color-mix(in srgb,var(--glow-color) 32%,transparent),0 5px 14px color-mix(in srgb,var(--glow-color) 18%,transparent); }
+  .glow-btn:not(:disabled):hover::before { opacity:1; }
+}
+.glow-btn[data-state=clicked]:not(:disabled),button.glow-btn:active:not(:disabled),button:active .glow-btn { transform:scale(.98); box-shadow:inset 0 2px 5px #38520030,0 0 12px color-mix(in srgb,var(--glow-color) 20%,transparent); }
+.glow-btn:disabled { background:var(--surface-raised); border-color:var(--line); color:var(--subtle); box-shadow:none; cursor:not-allowed; }
+.glow-btn:disabled::before { opacity:0; }
+@media(prefers-reduced-motion:reduce) {
+  .glow-btn,.glow-btn::before { transition:none; }
+  .glow-btn[data-state=clicked]:not(:disabled),button.glow-btn:active:not(:disabled),button:active .glow-btn { transform:none; }
+}

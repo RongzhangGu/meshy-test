@@ -1,0 +1,16 @@
+# Local dependencies and build output
+node_modules/
+dist/
+coverage/
+
+# Local scratch files and operating system metadata
+tmp/
+.DS_Store
+*.log
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key

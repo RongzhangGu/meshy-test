@@ -1,0 +1,17 @@
+{
+  "mode": "built-in imagegen",
+  "purpose": "Archived photo-playground visual exploration; not used by the current capability-first UI.",
+  "reference": "public/assets/corgi.webp",
+  "assets": [
+    {
+      "name": "corgi-figure",
+      "prompt": "Use case: product-mockup. Asset type: isolated object for an interactive product design website. Reference image: the supplied corgi photograph establishes the SAME individual dog, tan and white markings, cheerful open mouth, upright ears, tiny teal/tan cap, and white colorful floral bandana. Create ONE beautiful collectible chibi-style 3D printed figurine of this exact corgi, full body sitting with short paws, pleasantly oversized head, tangible smooth matte resin, precise toy craft. Three-quarter frontal view facing slightly left. Keep all of the ears, cap, and paws in frame. Object fills 78% of a square composition. Sophisticated soft studio side lighting, readable shadows on the object. True transparent background, no floor, no pedestal, no environment, no text or graphic labels, no collage. This is a rendered product concept, not a living dog. Maintain its reference identity.",
+      "path": "concepts/photo-playground/corgi-figure-concept.png"
+    },
+    {
+      "name": "corgi-lamp",
+      "prompt": "Use case: product-mockup. Asset type: isolated object for an interactive product design website. Reference image: the supplied corgi photo establishes the dog's upright large ears, smiling open mouth and corgi facial proportions. Create ONE premium sculptural table nightlight, a rounded hollow translucent ivory 3D printed shell in the form of this exact corgi's head. Capture the corgi ears, rounded muzzle and tiny cap as subtle sculptural forms. Soft warm light glows from within the thin matte resin shell; credible raised and recessed facial geometry, no painted dog fur, no actual animal. Flat concealed base, compact single object. Three-quarter frontal view facing slightly left. Object fills 76% of a square composition, whole object visible. True transparent background, no surrounding room, no floor, no text or labels, no pedestal or hands. Refined physical product photography.",
+      "path": "concepts/photo-playground/corgi-lamp-concept.png"
+    }
+  ]
+}

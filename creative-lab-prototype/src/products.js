@@ -1,0 +1,29 @@
+// Filter memberships verified against Meshy Creative Lab on 2026-09-18.
+// Catalogue availability can overlap and is separate from each prototype workspace mode.
+export const products = [
+  { atlasIndex: 0, id: 'keychain', filters: ['popular', 'ship'], title: '3D Keychain', subtitle: 'A favorite face. Always with you.', image: 'keychain', source: 'keychain-hover', category: 'Everyday objects', mode: 'ship', featured: true, route: 'keychain', detail: 'Turn a favorite photo into a keepsake you can carry.', input: 'A clear photo of a person, pet or object' },
+  { atlasIndex: 1, id: 'chibi', filters: ['new', 'popular', 'ship', 'print'], badge: 'Hot', title: 'Chibi Figure', subtitle: 'Your personality, in miniature.', image: 'chibi', source: 'chibi-hover', category: 'Collectibles', mode: 'print', route: 'figurine', detail: 'Turn a portrait into a playful, miniature figure.', input: 'A portrait with a clearly visible face' },
+  { atlasIndex: 2, id: 'vinyl', filters: ['new'], title: 'Vinyl Figure', subtitle: 'Meet your collectible alter ego.', image: 'vinyl', source: 'vinyl-hover', category: 'Collectibles', mode: 'print', route: 'vinyl-figurine', detail: 'Make a big-head, vinyl-style figure from your photo.', input: 'A well-lit portrait or character image' },
+  { atlasIndex: 3, id: 'pet', filters: ['new', 'print'], title: 'Pet Keepsake', subtitle: 'For the one who has your heart.', image: 'pet', source: 'pet-hover', category: 'For pets', mode: 'print', route: 'pet-keepsake', detail: 'Turn your pet’s photo into a keepsake sculpture.', input: 'A clear photo of your pet' },
+  { atlasIndex: 4, id: 'brick', filters: ['new'], title: 'Brick Figure', subtitle: 'A tiny you. A big adventure.', image: 'brick', source: 'brick-hover', category: 'Collectibles', mode: 'print', route: 'brick-figure', detail: 'Reimagine your portrait as a brick-style character.', input: 'A front-facing portrait' },
+  { atlasIndex: 5, id: 'lamp', filters: ['popular', 'print'], title: 'Sculptural Lamp', subtitle: 'Give your ideas a little glow.', image: 'lamp', source: 'lamp-hover', category: 'Everyday objects', mode: 'print', route: 'lamp', detail: 'Turn a shape or image into a sculptural lamp.', input: 'A reference image of a shape or object' },
+  { atlasIndex: 6, id: 'magnet', filters: [], title: '3D Fridge Magnet', subtitle: 'Memories that stick around.', image: 'magnet', source: 'magnet-hover', category: 'Everyday objects', mode: 'print', route: 'fridge-magnet', detail: 'Give a favorite photo depth as a fridge magnet.', input: 'A photo with one clear subject' },
+  { id: 'keycap', filters: ['popular'], title: 'Custom Keycap', detail: 'Turn a photo into a keycap for your keyboard.', image: 'keycap', source: 'keycap-hover', category: 'Everyday objects', mode: 'print', route: 'keycap', input: 'A clear photo of a pet, person or object', extraAtlasIndex: 0 },
+  { id: 'pixel', filters: ['new', 'print'], title: 'Pixel Fidget', detail: 'Turn a simple image into a pixel-style fidget.', image: 'pixel', source: 'pixel-hover', category: 'Play & fidget', mode: 'print', route: 'fidget-pixel', input: 'An image with a clear silhouette', extraAtlasIndex: 1 },
+  { id: 'egg', filters: ['new', 'print'], title: 'Twist Egg', detail: 'A twist-open keepsake made from your photo.', image: 'egg', source: 'egg-hover', category: 'Play & fidget', mode: 'print', route: 'twist-egg', input: 'A photo of a pet, character or object', catalogueAtlasIndex: 0 },
+  { id: 'collapsible', filters: ['new', 'print'], title: 'Collapsible Fidget', detail: 'A collapsible fidget in your chosen shape.', image: 'collapsible', source: 'collapsible-hover', category: 'Play & fidget', mode: 'print', route: 'fidget-collapsible', input: 'A photo or illustration with a clear silhouette', catalogueAtlasIndex: 1 },
+  { id: 'plantpot', filters: ['new', 'print'], title: 'Plant Pot', detail: 'Shape a planter around your favorite character.', image: 'plantpot', source: 'plantpot-hover', category: 'Everyday objects', mode: 'print', route: 'plantpot', input: 'A reference image for your planter', catalogueAtlasIndex: 2 },
+  { id: 'terrain', filters: ['new', 'print'], title: 'Tabletop Terrain', detail: 'Turn a map region into printable tabletop terrain.', image: 'terrain', source: 'terrain-hover', category: 'Maps & landscapes', mode: 'print', route: 'tabletop-terrain', inputKind: 'map', catalogueAtlasIndex: 3 },
+  { id: 'pixleap', filters: ['new', 'ship'], badge: 'New', title: 'Pixleap 3D Frame', detail: 'Explore a digital frame for displaying 3D artwork.', image: 'pixleap', source: 'pixleap', category: '3D displays', mode: 'device', route: 'pixleap', inputKind: 'display', catalogueAtlasIndex: 4 },
+];
+
+// The opening and the expanded catalogue now show the same complete collection.
+export const openingProducts = products;
+
+export function productArtwork(product) {
+  if(product.id==='pet') return {backgroundImage:'url(/assets/pet-cutout.png)',backgroundSize:'contain',backgroundPosition:'center',backgroundRepeat:'no-repeat'};
+  if(product.id==='magnet'||product.catalogueAtlasIndex !== undefined) return {backgroundImage:`url(/assets/${product.image}.webp)`,backgroundSize:'contain',backgroundPosition:'center',backgroundRepeat:'no-repeat'};
+  return product.extraAtlasIndex !== undefined
+    ? {backgroundImage:'url(/assets/creation-extras-cutout.png)', backgroundSize:'200% 100%', backgroundPosition:`${product.extraAtlasIndex * 100}% 50%`}
+    : {backgroundImage:'url(/assets/creation-atlas-cutout-v2.png)', backgroundPosition:`${product.atlasIndex % 4 * 100 / 3}% ${Math.floor(product.atlasIndex / 4) * 100}%`};
+}

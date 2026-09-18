@@ -1,0 +1,4 @@
+.scroll-float { display:block; overflow:hidden; padding:.14em; margin:-.14em; }
+.scroll-float-text { position:relative; display:inline-block; font:inherit; text-align:center; line-height:inherit; }
+.scroll-float-word { display:inline-block; white-space:nowrap; }
+.scroll-float .char { display:inline-block; }

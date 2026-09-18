@@ -1,0 +1,12 @@
+{
+  "observed_at": "2026-09-16",
+  "page": "https://www.meshy.ai/zh/creative-lab/lamp",
+  "purpose": "Independent local UI/UX prototype; no manufacturing or generation",
+  "assets": {
+    "lamp-dog.stl": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/models/1.stl",
+    "lamp-mountain.stl": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/models/7.stl",
+    "../assets/lamp-dog.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/1.webp",
+    "../assets/lamp-mountain.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/7.webp"
+  },
+  "keychain_geometry": "Created locally in ThreePreview.jsx. Flat example photos, not AI relief."
+}

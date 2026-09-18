@@ -1,0 +1,11 @@
+# Catalogue cutouts · 2026-09-17
+
+Built-in imagegen; five official reference images in order: egg, collapsible, plantpot, terrain, pixleap. Final output: `public/assets/catalogue-cutouts-v2.png` (1536 × 1024).
+
+## Initial atlas prompt
+
+Create a single transparent product cutout sprite atlas for an existing dark UI. Exactly 3 columns by 2 rows of equal square cells; canvas ratio 3:2. Five isolated reference products, sixth cell completely empty. Preserve reference product design, colors, viewing angles and material faithfully; remove all backgrounds and unrelated props, do not redesign. Cell positions: top left: the one assembled white cute bird-shaped twist egg in hoodie from reference1, omit separate loose halves. Top middle: the one raised terracotta maple-leaf collapsible fidget on the right of reference2, omit flat duplicate. Top right: the white duck-shaped plant pot with green succulents and its white circular drip tray from reference3. Bottom left: the single white mountainous tabletop terrain block with its dark base from reference4, omit keyboard/desk/plant. Bottom middle: the complete standalone black Pixleap display with its orc image from reference5, retain screen image, omit tabletop/window/background. Bottom right: empty. Each isolated product centered in its square cell with approximately 10 percent transparent padding. Soft premium studio lighting, crisp edges, no ground shadows, no extra text, no labels, no card surfaces, no glow, actual transparent alpha background everywhere outside the five objects. This is a UI cutout atlas edit, not an illustrated scene.
+
+## Cleanup prompt
+
+Background removal only. Keep the exact five products, their colors, geometry, screen image, cell positions, sizes and 1536x1024 3-column by 2-row layout unchanged. Remove ALL background haze, gray/white gradients, glow, ground shadows and semi-transparent colored halos between and around the objects. Output clean isolated product cutouts on actual alpha=0 transparent background. Only the five physical objects are visible. No square backgrounds or luminous mats. Preserve fine succulent leaves and spaces between the fidget contours. Bottom-right cell completely transparent. No other changes.
