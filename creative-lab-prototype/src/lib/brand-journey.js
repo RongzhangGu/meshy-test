@@ -4,22 +4,26 @@ export const smooth01 = (value) => {
   return t * t * (3 - 2 * t);
 };
 
-// The pen stroke shares the trip clock, so pauses and reversals retain its tip.
+// A visited stop leaves its dot as soon as the sphere departs. The receiving
+// stop stays covered throughout inertia, including a return to a visited stop.
+export function workflowStepMarker(visited, { current, receiving, guide, anchor }) {
+  const settled = current && receiving && guide
+    && Math.hypot(guide.x - anchor.x, guide.y - anchor.y) < 0.75;
+  visited = visited || Boolean(settled);
+  return { visited, appearance: current && receiving ? 'covered' : visited ? 'solid' : 'empty' };
+}
+
+// Draw on arrival from the shelf; keep the completed stroke when jumping onward.
+// Reversing toward the shelf retraces the drawing, while Workflow returns to its end.
 export function businessMarkMotion({ from, to, progress }) {
-  if (from === to) return { ink: from === 2 ? 1 : 0, flight: progress, drawing: false };
+  if (from === to) return { ink: from >= 2 ? 1 : 0, flight: progress, drawing: false };
   if (to === 2)
     return {
       ink: smooth01((progress - 0.6) / 0.4),
       flight: clamp01(progress / 0.6),
       drawing: progress >= 0.6,
     };
-  if (from === 2)
-    return {
-      ink: 1 - smooth01(progress / 0.4),
-      flight: clamp01((progress - 0.4) / 0.6),
-      drawing: progress <= 0.4,
-    };
-  return { ink: 0, flight: progress, drawing: false };
+  return { ink: from >= 2 ? 1 : 0, flight: progress, drawing: false };
 }
 
 // Scroll chooses the latest destination; do not queue stops the reader has passed.
@@ -217,62 +221,4 @@ export function seedFlightPosition({ a, b, progress, bend = 80 }) {
       u ** 3 * end.y,
     recess: Math.sin(Math.PI * u) ** 2,
   };
-}
-
-// One small, bounded particle field, intentionally capped at eight objects.
-export function advanceSeeds(balls, dt, pointer, bounds) {
-  dt = Math.min(dt, 1 / 30);
-  for (const ball of balls) {
-    ball.vx += (ball.homeX - ball.x) * dt * 1.6;
-    ball.vy += (ball.homeY - ball.y) * dt * 1.6;
-    if (pointer) {
-      const dx = ball.x - pointer.x,
-        dy = ball.y - pointer.y;
-      const distance = Math.max(0.01, Math.hypot(dx, dy));
-      if (distance < 1.1) {
-        const force = (1.1 - distance) * 24 * dt;
-        ball.vx += ((dx || 0.01) / distance) * force;
-        ball.vy += (dy / distance) * force;
-      }
-    }
-    const damping = Math.exp(-1.9 * dt);
-    ball.vx *= damping;
-    ball.vy *= damping;
-    ball.x += ball.vx * dt;
-    ball.y += ball.vy * dt;
-    const xLimit = bounds.x - ball.r,
-      yLimit = bounds.y - ball.r;
-    if (Math.abs(ball.x) > xLimit) {
-      ball.x = Math.sign(ball.x) * xLimit;
-      ball.vx *= -0.8;
-    }
-    if (Math.abs(ball.y) > yLimit) {
-      ball.y = Math.sign(ball.y) * yLimit;
-      ball.vy *= -0.8;
-    }
-  }
-  for (let i = 0; i < balls.length; i++)
-    for (let j = i + 1; j < balls.length; j++) {
-      const a = balls[i],
-        b = balls[j],
-        dx = b.x - a.x,
-        dy = b.y - a.y;
-      const distance = Math.hypot(dx, dy),
-        min = a.r + b.r;
-      if (distance >= min) continue;
-      const nx = distance > 0.001 ? dx / distance : 1,
-        ny = distance > 0.001 ? dy / distance : 0;
-      const overlap = (min - distance) / 2;
-      a.x -= nx * overlap;
-      a.y -= ny * overlap;
-      b.x += nx * overlap;
-      b.y += ny * overlap;
-      const approaching = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
-      if (approaching < 0) {
-        a.vx += approaching * nx * 0.9;
-        a.vy += approaching * ny * 0.9;
-        b.vx -= approaching * nx * 0.9;
-        b.vy -= approaching * ny * 0.9;
-      }
-    }
 }

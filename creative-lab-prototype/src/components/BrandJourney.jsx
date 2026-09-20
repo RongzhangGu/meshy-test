@@ -9,6 +9,7 @@ import {
   pointOnSeedPath,
   seedFlightPosition,
   workflowEntryPosition,
+  workflowStepMarker,
   smooth01,
 } from '../lib/brand-journey.js';
 import { CAPSULE_TRAVEL_MS, capsuleArrival, capsuleFlightPosition } from '../lib/capsule-motion.js';
@@ -29,6 +30,7 @@ export default function BrandJourney({ disabled }) {
   useEffect(() => {
     if (disabled) return;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const root = document.documentElement;
     // Own this decorative node outside React so it can move between real scene
     // layers without moving or duplicating any interactive content.
     const el = document.createElement('div');
@@ -75,7 +77,7 @@ export default function BrandJourney({ disabled }) {
         return;
       }
       const height = innerHeight;
-      const daylight = document.documentElement.dataset.theme === 'light';
+      const daylight = root.dataset.theme === 'light';
       const points = names.map((name, i) => anchor(name, i === 3 ? 14 : undefined));
       if (points.some((p) => !p)) {
         el.style.opacity = 0;
@@ -91,7 +93,7 @@ export default function BrandJourney({ disabled }) {
         document.getElementById('toolkit-title'),
       ];
       const headings = headingNodes.map((n) => (n ? rect(n) : null));
-      const navHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
+      const navHeight = parseFloat(getComputedStyle(root).getPropertyValue('--nav-height')) || 72;
       const titleVisible = (i) => isSeedHeadingVisible(headings[i], scrollY + navHeight, scrollY + height);
       const sheet = elements[3].querySelector('.workflow-sheet'),
         sheetBox = rect(sheet);
@@ -136,14 +138,10 @@ export default function BrandJourney({ disabled }) {
       }
       const playground = elements[6].querySelector('.finale-playground');
       points[6].size = 14;
-      const dock =
-        parseFloat(getComputedStyle(elements[3].querySelector('.workflow-stage')).top) || 84;
-      const catalogDock =
-        parseFloat(getComputedStyle(document.querySelector('.opening-sticky')).top) || 84;
+      const openingStyle = getComputedStyle(document.querySelector('.opening-sticky'));
+      const catalogDock = parseFloat(openingStyle.top) || 84;
       const openingDock = boxes[0].top + (Number(elements[0].dataset.travel) || 0) - catalogDock;
       const stops = points.map((p) => p.y - height * 0.35);
-      stops[0] = openingDock;
-      stops[3] = boxes[3].top - dock;
       stops[6] = boxes[6].top - height * 0.4;
       // Falling journeys start as the destination heading first enters view.
       const shelfStart = Math.max(openingDock + 1, headings[1].top - height + 1);
@@ -166,10 +164,7 @@ export default function BrandJourney({ disabled }) {
       const shelfHeadingY = headings[1].top - scrollY;
       if (nextTarget === 2 && shelfHeadingY >= catalogDock && shelfHeadingY < height)
         nextTarget = 1;
-      const unfold =
-        Number(
-          getComputedStyle(document.querySelector('.opening-sticky')).getPropertyValue('--unfold'),
-        ) || 0;
+      const unfold = Number(openingStyle.getPropertyValue('--unfold')) || 0;
       const opening = scrollY <= openingDock + 1 && unfold < 1;
       target = opening ? 0 : nextTarget;
       if (!opening) {
@@ -222,7 +217,7 @@ export default function BrandJourney({ disabled }) {
           duration: journey?.to === 6
             ? CAPSULE_TRAVEL_MS
             : enteringWorkflow
-              ? (daylight ? 1100 : 660)
+              ? 660
               : business
               ? (daylight ? 650 : 450)
               : 1000,
@@ -247,8 +242,9 @@ export default function BrandJourney({ disabled }) {
           depth: 1,
         };
       };
-      // Keep the section trigger in place; only its visual landing changes.
-      if (daylight) points[2] = markPoint(0);
+      // Arrive from the shelf at the pen's start; depart and return from Workflow
+      // at its completed tip, without rewinding the stroke before the jump.
+      if (daylight) points[2] = markPoint(from === 2 ? 1 : 0);
       const finale = capsuleArrival(from === 6 ? 1 : to === 6 ? mark.flight : 0);
       const holdingWorkflow = from === 3 && holding;
       let pose,
@@ -386,7 +382,6 @@ export default function BrandJourney({ disabled }) {
       el.style.filter = `brightness(${1 - 0.2 * recess}) blur(${0.3 * recess}px)`;
       el.style.borderRadius = `${pose.round}%`;
       el.style.setProperty('--seed-depth', pose.depth);
-      const root = document.documentElement;
       root.dataset.seedMoving = hide ? '' : owner;
       root.dataset.seedDeparting = hide ? '' : names[from];
       const active = holding ? from : progress > 0.65 ? to : from;
@@ -401,6 +396,20 @@ export default function BrandJourney({ disabled }) {
         ? holdingWorkflow ? 'docked' : 'waiting'
         : 'released';
       guide.style.opacity = holdingWorkflow ? 1 : 0;
+      const guideRect = holdingWorkflow && !hopping && localProgress === 1 ? rect(guide) : null;
+      const paintedGuide = guideRect
+        ? { x: guideRect.left + guideRect.width / 2, y: guideRect.top + guideRect.height / 2 }
+        : null;
+      elements[3].querySelectorAll('.workflow-steps > li').forEach((step) => {
+        const marker = workflowStepMarker(step.dataset.seedVisited === 'true', {
+          current: step.classList.contains('is-current'),
+          receiving: holdingWorkflow || (!holding && to === 3 && target === 3),
+          guide: paintedGuide,
+          anchor: points[3],
+        });
+        step.dataset.seedVisited = String(marker.visited);
+        step.dataset.seedMarker = marker.appearance;
+      });
       const light =
         holding && from === 2
           ? 1
@@ -479,6 +488,7 @@ export default function BrandJourney({ disabled }) {
       delete document.documentElement.dataset.seedMoving;
       delete document.documentElement.dataset.seedDeparting;
       delete document.querySelector('.lab-workflow')?.dataset.seedTitle;
+      document.querySelectorAll('[data-seed-marker]').forEach((step) => delete step.dataset.seedMarker);
       el.remove();
     };
   }, [disabled]);

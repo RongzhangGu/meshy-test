@@ -421,10 +421,6 @@
 [data-theme='light'] .orbit-trail-star {
   filter: none;
 }
-[data-theme='light'] .capsule-fallback {
-  background: radial-gradient(circle at 30% 24%, #edf5d9, #c8e77b 18%, #9ed52b 55%, #75ac1e 85%);
-  box-shadow: inset -6px -12px 22px #40631926;
-}
 
 @media (max-width: 760px) {
   [data-theme='light'] .opening-model-description {

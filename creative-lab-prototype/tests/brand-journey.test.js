@@ -10,25 +10,14 @@ import {
   pointOnSeedPath,
   seedFlightPosition,
   workflowEntryPosition,
-  advanceSeeds,
+  workflowStepMarker,
 } from '../src/lib/brand-journey.js';
 
-test('business underline finishes after landing and retracts before departure on the reversible trip clock', () => {
+test('business underline finishes after landing and retraces when returning to the shelf', () => {
   const arrival = (p) => businessMarkMotion({ from: 1, to: 2, progress: p });
-  const departure = (p) => businessMarkMotion({ from: 2, to: 3, progress: p });
   assert.deepEqual(arrival(0), { ink: 0, flight: 0, drawing: false });
   assert.deepEqual(arrival(0.6), { ink: 0, flight: 1, drawing: true });
   assert.deepEqual(arrival(1), { ink: 1, flight: 1, drawing: true });
-  assert.deepEqual(departure(0), { ink: 1, flight: 0, drawing: true });
-  assert.deepEqual(departure(0.4), { ink: 0, flight: 0, drawing: true });
-  assert.deepEqual(departure(1), { ink: 0, flight: 1, drawing: false });
-  for (let i = 0; i <= 100; i++) {
-    const p = i / 100;
-    assert.ok(
-      Math.abs(arrival(p).ink - departure(1 - p).ink) < 1e-12,
-      'reverse travel retraces the same ink',
-    );
-  }
   let state = advanceSeedJourney(null, { target: 1, now: 0 });
   state = advanceSeedJourney(state, { target: 2, now: 700 });
   state = advanceSeedJourney(state, { target: 2, now: 1820, duration: 1400 });
@@ -46,6 +35,29 @@ test('business underline finishes after landing and retracts before departure on
       .ink,
     1,
   );
+});
+
+test('Business jumps immediately from its completed stroke and returns without erasing it', () => {
+  const duration = 660;
+  let state = advanceSeedJourney(null, { target: 2, now: 0 });
+  state = advanceSeedJourney(state, { target: 3, now: 16, duration });
+  for (let elapsed = 0; elapsed <= duration; elapsed += 33) {
+    state = advanceSeedJourney(state, { target: 3, now: 16 + elapsed, duration });
+    const mark = businessMarkMotion(state);
+    assert.equal(mark.ink, 1, 'the completed underline remains through the jump and landing');
+    assert.equal(mark.drawing, false, 'there is no pen-retraction phase');
+    if (state.from !== state.to) assert.equal(mark.flight, state.progress, 'no delay before flight');
+  }
+  assert.deepEqual([state.from, state.to], [3, 3]);
+  state = advanceSeedJourney(state, { target: 2, now: 700, duration });
+  for (let elapsed = 0; elapsed <= duration; elapsed += 33) {
+    state = advanceSeedJourney(state, { target: 2, now: 700 + elapsed, duration });
+    assert.equal(businessMarkMotion(state).ink, 1, 'returning to the pen tip keeps the stroke');
+    assert.equal(businessMarkMotion(state).drawing, false);
+  }
+  assert.deepEqual([state.from, state.to], [2, 2]);
+  for (const at of [4, 5, 6])
+    assert.equal(businessMarkMotion({ from: at, to: at, progress: 0 }).ink, 1);
 });
 
 test('adjacent section trips start immediately and reverse the same progress', () => {
@@ -292,7 +304,7 @@ test('section flights use the interior, recede and reverse through identical pos
   assert.equal(forward[500].recess, 1);
 });
 
-test('the mark lands exactly at either anchor and particles stay finite after a pause or collision', () => {
+test('the mark follows a continuous path and lands exactly at either anchor', () => {
   const a = { x: 280, y: 120 },
     b = { x: 220, y: 1500 };
   const path = [
@@ -315,19 +327,6 @@ test('the mark lands exactly at either anchor and particles stay finite after a 
     if (p.y > 154 && p.y < 1470) assert.equal(p.x, 16, 'travel stays outside the content');
     previous = p;
   }
-  const balls = [
-    { x: 0, y: 0, vx: 0, vy: 0, homeX: -1, homeY: 1, r: 0.2 },
-    { x: 0, y: 0, vx: 0, vy: 0, homeX: 1, homeY: -1, r: 0.2 },
-  ];
-  for (let i = 0; i < 500; i++)
-    advanceSeeds(balls, i === 0 ? 8 : 1 / 60, { x: 0, y: 0 }, { x: 2.65, y: 2.65 });
-  for (const ball of balls)
-    for (const key of ['x', 'y', 'vx', 'vy']) assert.ok(Number.isFinite(ball[key]));
-  for (const ball of balls) {
-    assert.ok(Math.abs(ball.x) < 2.66);
-    assert.ok(Math.abs(ball.y) < 2.66);
-  }
-  assert.ok(Math.hypot(balls[0].x - balls[1].x, balls[0].y - balls[1].y) >= 0.39);
 });
 
 test('falling is frame-rate independent and reversing starts at the current position', () => {
@@ -348,4 +347,22 @@ test('falling is frame-rate independent and reversing starts at the current posi
   returning = advanceSeedDrop(returning, { ...route, now: 740, target: 0 });
   assert.equal(returning.phase, 'settled');
   assert.deepEqual([returning.x, returning.y], [route.a.x, route.a.y]);
+});
+
+
+test('visited steps leave a solid marker during departure, while an inertial arrival stays covered', () => {
+  const anchor = { x: 100, y: 200 };
+  const arrival = { current: true, receiving: true, anchor, guide: { x: 100, y: 218 } };
+  assert.deepEqual(workflowStepMarker(false, arrival), { visited: false, appearance: 'covered' });
+  const docked = workflowStepMarker(false, { ...arrival, guide: anchor });
+  assert.deepEqual(docked, { visited: true, appearance: 'covered' });
+  for (const current of [true, false]) {
+    assert.deepEqual(workflowStepMarker(docked.visited, {
+      ...arrival, current, receiving: false, guide: null,
+    }), { visited: true, appearance: 'solid' }, 'departure to another step or FAQ leaves the dot immediately');
+  }
+  assert.deepEqual(workflowStepMarker(true, arrival), { visited: true, appearance: 'covered' },
+    'returning to a visited stop cannot expose its marker under the moving sphere');
+  assert.deepEqual(workflowStepMarker(false, { ...arrival, current: false }),
+    { visited: false, appearance: 'empty' }, 'skipped stops are not marked visited');
 });

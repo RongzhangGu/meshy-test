@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { advanceSeeds, smooth01 } from '../lib/brand-journey.js';
-import { advanceCapsuleSpring, resolveSeedShellContacts } from '../lib/capsule-motion.js';
+import { smooth01 } from '../lib/brand-journey.js';
+import { advanceSeeds, advanceCapsuleSpring, resolveSeedShellContacts } from '../lib/capsule-motion.js';
 
 // Bespoke small scene inspired by React Bits' Ballpit: shared Three.js lighting,
 // bounded sphere collisions, and pointer forces. No global touch/scroll handlers.
@@ -283,9 +283,6 @@ export default function SeedCapsule({ sectionRef }) {
       const dock = section.querySelector('[data-seed-anchor=finale]');
       dock.style.left = `${(center.x * 0.5 + 0.5) * 100}%`;
       dock.style.top = `${(-center.y * 0.5 + 0.5) * 100}%`;
-      section.style.setProperty('--capsule-center-x', dock.style.left);
-      section.style.setProperty('--capsule-center-y', dock.style.top);
-      section.style.setProperty('--capsule-diameter', `${diameter}px`);
       wake();
     }
     // Relight the existing scene when the theme changes, preserving its motion.
@@ -387,7 +384,6 @@ export default function SeedCapsule({ sectionRef }) {
   return (
     <div className="capsule-experience" data-ready={ready && !failed}>
       <div className="capsule-canvas" ref={host} />
-      {(!ready || failed) && <div className="capsule-fallback" aria-hidden="true" />}
       {!failed && (
         <button
           className="capsule-toggle"
@@ -397,14 +393,6 @@ export default function SeedCapsule({ sectionRef }) {
           onClick={() => api.current?.toggle()}
         >
           <span className="capsule-hit" aria-hidden="true" />
-          <span className="capsule-invitation">
-            <span className="capsule-hint capsule-hint-pointer">
-              {opened ? 'Move your cursor to stir the ideas' : 'Click the sphere'}
-            </span>
-            <span className="capsule-hint capsule-hint-touch">
-              {opened ? 'Tap to close. Tap again to open.' : 'Tap the sphere'}
-            </span>
-          </span>
         </button>
       )}
     </div>

@@ -63,7 +63,6 @@ body {
   width: 100%;
   min-width: 0;
   border: 1px solid #697c4c;
-  border-radius: 20px;
   background: var(--surface);
   overflow: hidden;
   scroll-margin-top: 24px;
@@ -93,7 +92,6 @@ body {
 }
 .studio-description {
   color: var(--muted);
-  font-size: 11px;
   line-height: 1.8;
   margin: 0 0 24px;
 }
@@ -115,9 +113,6 @@ body {
 .studio-controls .photo-uploader.populated > button {
   height: 28px;
   width: 26px;
-}
-.studio-controls .photo-uploader.populated strong {
-  font-size: 10px;
 }
 .studio-controls .photo-uploader.populated span {
   font-size: 9px;
@@ -146,7 +141,6 @@ body {
 }
 .workspace-note p {
   margin: 0;
-  font-size: 10px;
   line-height: 1.8;
 }
 .workspace-note svg {
@@ -248,7 +242,6 @@ body {
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 8px;
   color: #a9b09f;
   pointer-events: none;
 }
@@ -352,9 +345,6 @@ body {
   letter-spacing: -0.7px;
   font-weight: 600;
   margin: 17px 0 26px;
-}
-.workspace-body:has(.reference-inspector) {
-  grid-template-columns: 280px minmax(0, 1fr) 250px;
 }
 .dimension-control {
   display: block;
@@ -529,8 +519,7 @@ body {
   .workspace-body {
     grid-template-columns: 280px minmax(0, 1fr);
   }
-  .is-editing .workspace-body,
-  .workspace-body:has(.reference-inspector) {
+  .is-editing .workspace-body {
     grid-template-columns: 240px minmax(0, 1fr) 220px;
   }
   .studio-controls,
@@ -551,8 +540,7 @@ body {
 }
 @media (max-width: 900px) {
   .workspace-body,
-  .is-editing .workspace-body,
-  .workspace-body:has(.reference-inspector) {
+  .is-editing .workspace-body {
     grid-template-columns: 260px minmax(0, 1fr);
   }
   .workspace-inspector {
@@ -583,8 +571,7 @@ body {
     scroll-margin-top: 12px;
   }
   .workspace-body,
-  .is-editing .workspace-body,
-  .workspace-body:has(.reference-inspector) {
+  .is-editing .workspace-body {
     display: flex;
     flex-direction: column;
   }
@@ -656,13 +643,6 @@ body {
 
 /* Page layout and workspace theme */
 :root[data-theme='light'] {
-  --bg: #f6f5ef;
-  --surface: #fbfaf6;
-  --surface-raised: #e8e8dd;
-  --text: #25291f;
-  --muted: #63695d;
-  --subtle: #6a7064;
-  --line: #d6d8cb;
   --accent: #c2f565;
   --accent-ink: #253211;
   --accent-soft: #e6efd4;
@@ -682,14 +662,10 @@ body {
 }
 .site-header {
   max-width: none;
-  height: 84px;
   padding: 0 48px;
   gap: 48px;
-  position: relative;
 }
 .site-header .brand {
-  background: #252b21;
-  padding: 0 8px;
   border-radius: 5px;
 }
 .site-header .brand img {
@@ -723,12 +699,7 @@ body {
   font-size: 10px;
 }
 .playground-page {
-  max-width: 1536px;
-  padding: 0 48px 32px;
   margin: auto;
-}
-.creative-playground {
-  scroll-margin-top: 20px;
 }
 .inline-studio {
   border-radius: 3px;
@@ -1109,17 +1080,10 @@ summary:focus-visible {
 }
 .catalog-workbench .workspace-note {
   font-size: 11px;
-  margin-top: 14px;
 }
 .catalog-workbench .workspace-inspector > h3 {
   font-size: 17px;
   margin: 0 0 18px;
-}
-.catalog-workbench .save-area {
-  padding-top: 22px;
-}
-.catalog-workbench .edit-source {
-  min-height: 36px;
 }
 
 .discovery-scene.is-editing {

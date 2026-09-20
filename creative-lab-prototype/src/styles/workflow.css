@@ -500,8 +500,6 @@ body {
 .lab-workflow[data-motion='static'] .workflow-title-context {
   position: static;
   transform: none;
-  font-size: 13px;
-  margin-bottom: 9px;
 }
 .lab-workflow[data-motion='static'] .workflow-action {
   position: relative;

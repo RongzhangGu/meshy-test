@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowRight, UploadSimple } from '@phosphor-icons/react';
 import SpecularButton from './SpecularButton.jsx';
+import './creation-finale.css';
 
 const SeedCapsule = lazy(() => import('./SeedCapsule.jsx'));
 

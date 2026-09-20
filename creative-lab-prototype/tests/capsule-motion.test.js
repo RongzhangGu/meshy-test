@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  advanceSeeds,
   advanceCapsuleSpring,
   capsuleArrival,
   capsuleFlightPosition,
@@ -10,7 +11,7 @@ import {
   CAPSULE_TRAVEL_MS,
   CAPSULE_TIMING,
 } from '../src/lib/capsule-motion.js';
-import { advanceSeeds } from '../src/lib/brand-journey.js';
+import { advanceSeedJourney } from '../src/lib/brand-journey.js';
 
 test('particles bounce off moving, tilted hemispheres and their rims throughout opening and closing', () => {
   const shell = { x: 0, y: 0, z: 0, nx: 0, ny: 1, nz: 0, radius: 1.15, vx: 0, vy: 0 };
@@ -71,7 +72,6 @@ test('particles bounce off moving, tilted hemispheres and their rims throughout 
       }
   }
 });
-import { advanceSeedJourney } from '../src/lib/brand-journey.js';
 
 test('capsule springs open continuously, overshoot gently and settle independently of frame rate', () => {
   const samples = [];
@@ -257,4 +257,20 @@ test('growth and natural-speed opening overlap to finish around 1.5 seconds', ()
       `complete and settled after ${Math.round(total)} ms at ${fps} fps`,
     );
   }
+});
+
+test('particles stay finite and separated after a pause or collision', () => {
+  const balls = [
+    { x: 0, y: 0, vx: 0, vy: 0, homeX: -1, homeY: 1, r: 0.2 },
+    { x: 0, y: 0, vx: 0, vy: 0, homeX: 1, homeY: -1, r: 0.2 },
+  ];
+  for (let i = 0; i < 500; i++)
+    advanceSeeds(balls, i === 0 ? 8 : 1 / 60, { x: 0, y: 0 }, { x: 2.65, y: 2.65 });
+  for (const ball of balls)
+    for (const key of ['x', 'y', 'vx', 'vy']) assert.ok(Number.isFinite(ball[key]));
+  for (const ball of balls) {
+    assert.ok(Math.abs(ball.x) < 2.66);
+    assert.ok(Math.abs(ball.y) < 2.66);
+  }
+  assert.ok(Math.hypot(balls[0].x - balls[1].x, balls[0].y - balls[1].y) >= 0.39);
 });
