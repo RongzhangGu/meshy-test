@@ -1,0 +1,18 @@
+.tilted-card { position:relative; width:100%; aspect-ratio:2 / 1; margin:0; perspective:900px; }
+.tilted-card-surface { position:absolute; inset:0; border-radius:20px; transform-style:preserve-3d; }
+.tilted-card-image { position:absolute; inset:0; overflow:hidden; border-radius:inherit; background:#161c1b; box-shadow:0 12px 28px #0002; transition:box-shadow .35s; }
+.tilted-card-image img { display:block; width:100%; height:100%; object-fit:contain; object-position:center; }
+.tilted-card-image::after { content:''; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(180deg,#0000 48%,#0002 72%,#0006); box-shadow:inset 0 0 0 1px #ffffff18; pointer-events:none; }
+.tilted-card-overlay { position:absolute; inset:0; transform:translateZ(36px); pointer-events:none; }
+.tilted-card-caption { position:absolute; top:12px; left:12px; z-index:3; width:240px; padding:12px 14px; border:1px solid #ffffff20; border-radius:10px; background:#101113ed; color:#f5f6f3; box-shadow:0 8px 24px #0003; font-size:12px; line-height:1.6; pointer-events:none; opacity:0; transition:opacity .2s; }
+@media (hover:hover) and (pointer:fine) {
+  .tilted-card:hover .tilted-card-caption { opacity:1; }
+  .tilted-card:hover .tilted-card-image { box-shadow:0 26px 48px #0005; }
+}
+@media (hover:none), (pointer:coarse), (prefers-reduced-motion:reduce) {
+  .tilted-card-surface,.tilted-card-overlay { transform:none !important; }
+  .tilted-card-caption { display:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .tilted-card-image,.tilted-card-caption { transition:none; }
+}

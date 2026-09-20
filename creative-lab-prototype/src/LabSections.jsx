@@ -1,21 +1,23 @@
 import React, { useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, ArrowUp, Images, Check, CheckCircle, CaretUpDown } from '@phosphor-icons/react';
+import { ArrowRight, ArrowUpRight, Images, Check, CheckCircle, CaretUpDown } from '@phosphor-icons/react';
 import { products } from './products.js';
 import Workflow from './Workflow.jsx';
 import Faq from './Faq.jsx';
+import TiltedCard from './TiltedCard.jsx';
 import SpecularButton from './SpecularButton.jsx';
+import CreationFinale from './CreationFinale.jsx';
 
 const official=path=>`https://www.meshy.ai${path}`;
 const toolkit=[
-  ['Image to 3D','Build a model from a photo or concept image.','tool-image','/features/image-to-3d'],
-  ['Text to 3D','Describe a new object and generate its shape.','tool-text','/features/text-to-3d'],
+  ['Image To 3D','Build a model from a photo or concept image.','tool-image','/features/image-to-3d'],
+  ['Text To 3D','Describe a new object and generate its shape.','tool-text','/features/text-to-3d'],
   ['AI Texturing','Give existing geometry new materials and surface detail.','tool-texture','/features/ai-texture-generator'],
   ['AI Image Generator','Create reference images for your next 3D idea.','tool-imagegen','/features/ai-image-generator'],
   ['AI Animation','Rig a character and explore ready-to-use motions.','tool-animation','/features/ai-animation-generator'],
   ['3D Printing','Prepare, export and slice models for your printer.','tool-print','/3d-printing']
 ];
 
-export default function LabSections({saved,onOpenSaved,onStartCreation,onBrowseCreations}) {
+export default function LabSections({saved,onOpenSaved,onStartCreation,onBrowseCreations,onUpload}) {
   const [inquiry,setInquiry]=useState(null);
   const businessStage = useRef(null);
   function reviewInquiry(event) {
@@ -24,16 +26,16 @@ export default function LabSections({saved,onOpenSaved,onStartCreation,onBrowseC
   }
   return <div className="lab-secondary">
     <section id="my-creations-panel" className="creation-shelf" aria-labelledby="my-creations-title">
-      <div className="shelf-title"><h2 id="my-creations-title" tabIndex={-1}>My creations <span>{Object.keys(saved).length}</span></h2></div>
-      {Object.keys(saved).length?<div className="saved-creations">{Object.entries(saved).map(([id,draft])=><button key={id} className="saved-creation" onClick={()=>onOpenSaved(id)}><img src={draft.url} alt="Saved source photo"/><span><strong>{draft.name||products.find(p=>p.id===id).title}</strong><small>{products.find(p=>p.id===id).title} · Continue editing</small></span><ArrowUpRight size={19}/></button>)}</div>:<div className="shelf-empty"><div className="shelf-symbol" aria-hidden="true"><Images size={34} weight="light"/></div><div><h3>No creations yet</h3><p>Save your first design and it will appear here.</p></div><button className="quiet-button" onClick={onStartCreation}>Create your first <ArrowRight size={17}/></button></div>}
+      <div className="shelf-title"><h2 className="lab-section-title" id="my-creations-title" tabIndex={-1}>My Creations <span>{Object.keys(saved).length}</span><i className="seed-rest seed-shelf" data-seed-anchor="shelf" aria-hidden="true"/></h2></div>
+      {Object.keys(saved).length?<div className="saved-creations">{Object.entries(saved).map(([id,draft])=><button key={id} className="saved-creation" onClick={()=>onOpenSaved(id)}><img src={draft.url} alt="Saved source photo"/><span><strong>{draft.name||products.find(p=>p.id===id).title}</strong><small>{products.find(p=>p.id===id).title} · Continue editing</small></span><ArrowUpRight size={19}/></button>)}</div>:<div className="shelf-empty"><div className="shelf-symbol" aria-hidden="true"><Images size={34} weight="light"/></div><div><h3>No Creations Yet</h3><p>Save your first design and it will appear here.</p></div><button className="quiet-button" onClick={onStartCreation}>Create your first <ArrowRight size={17}/></button></div>}
     </section>
 
     <div className="business-workflow">
     <section className="business-stage" id="business" aria-labelledby="business-title" ref={businessStage}>
       <div className="business-section">
-        <div className="business-story">
+        <div className="business-story"><span className="seed-beacon" data-seed-anchor="business" aria-hidden="true"/>
           <span className="section-eyebrow">FOR BUSINESS</span>
-          <h2 id="business-title">Sell custom 3D products<br/><span>under your own brand.</span></h2>
+          <h2 id="business-title">Sell Custom 3D Products<br/><span className="business-promise">Under Your Own Brand.<svg className="business-mark" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10 Q150 -2 300 10" pathLength="1"/></svg><i className="business-mark-rest" aria-hidden="true"/></span></h2>
           <p>Turn a photo or a prompt into a shipped, custom product, right inside the store or brand you already run. Drop in our widget and API, or build something custom with our team.</p>
           <ul className="business-benefits">
             <li><CheckCircle size={24} weight="fill" aria-hidden="true"/><span>Drop-in widget &amp; API — live in days, no printer needed</span></li>
@@ -42,7 +44,7 @@ export default function LabSections({saved,onOpenSaved,onStartCreation,onBrowseC
           </ul>
         </div>
         <div className="contact-panel">
-          <header className="contact-heading"><h3>Talk to our team</h3><p>Tell us what you’re building and we’ll reach out.</p></header>
+          <header className="contact-heading"><h3>Talk To Our Team</h3><p>Tell us what you’re building and we’ll reach out.</p></header>
           <form onSubmit={reviewInquiry} onChange={()=>setInquiry(null)}>
             <div className="contact-fields">
               <label htmlFor="business-email">Work email<input id="business-email" type="email" name="email" required autoComplete="email" placeholder="you@company.com"/></label>
@@ -64,9 +66,15 @@ export default function LabSections({saved,onOpenSaved,onStartCreation,onBrowseC
 
     <Faq/>
 
-    <section className="lab-toolkit" aria-labelledby="toolkit-title"><header className="support-heading"><h2 id="toolkit-title">Explore the Meshy toolkit</h2></header><div className="toolkit-grid">{toolkit.map(([title,description,asset,path])=><a className="toolkit-link" key={path} href={official(path)} target="_blank" rel="noreferrer"><div className="toolkit-art"><img src={`/assets/${asset}.webp`} alt="" loading="lazy" width="180" height="120"/></div><div><h3>{title}</h3><p>{description}</p></div><ArrowUpRight size={18}/></a>)}</div></section>
+    <section className="lab-toolkit" id="toolkit" aria-labelledby="toolkit-title">
+      <header className="support-heading"><h2 className="lab-section-title" id="toolkit-title">Explore Meshy's AI 3D Toolkit<i className="seed-rest" data-seed-anchor="toolkit" aria-hidden="true"/></h2></header>
+      <div className="toolkit-grid">{toolkit.map(([title,description,asset,path])=><a className="toolkit-link" key={path} href={official(path)} target="_blank" rel="noreferrer" aria-label={title} aria-describedby={`${asset}-description`}>
+        <TiltedCard imageSrc={`/assets/${asset}.webp`} captionText={description} rotateAmplitude={10} scaleOnHover={1.05} overlayContent={<div className="toolkit-card-title"><h3>{title}</h3><ArrowUpRight size={23} aria-hidden="true"/></div>}/>
+        <span className="sr-only" id={`${asset}-description`}>{description}</span>
+      </a>)}</div>
+    </section>
 
-    <section className="lab-return" aria-label="Return to creation"><div><h2>Found your next idea?</h2><p>Your creation starts with one photo.</p></div><button className="quiet-button" onClick={onBrowseCreations}>Back to creations <ArrowUp size={18}/></button></section>
+    <CreationFinale onUpload={onUpload} onBrowseCreations={onBrowseCreations}/>
     <footer className="lab-footer"><span>© 2026 Meshy <small>UI/UX concept</small></span><nav aria-label="Footer"><a href={official('/creative-lab')} target="_blank" rel="noreferrer">Original Creative Lab <ArrowUpRight size={12}/></a><a href={official('/privacy-policy')} target="_blank" rel="noreferrer">Privacy</a><a href={official('/terms-of-use')} target="_blank" rel="noreferrer">Terms</a></nav></footer>
   </div>;
 }

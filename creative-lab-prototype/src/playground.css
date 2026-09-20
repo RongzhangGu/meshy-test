@@ -120,8 +120,8 @@ body { min-width:320px; }
 .inline-studio { border-radius:3px; view-transition-name:playground; }
 .studio-collapse-back { display:flex; gap:7px; }
 .playground-stage { view-transition-name:playground; }
-[data-theme=light] .workspace-view { background:#e9ecdf; }
-[data-theme=light] .viewer-toolbar { background:#f6f5efee; box-shadow:0 4px 16px #3441201f; border-color:var(--line); }
+[data-theme=light] .workspace-view { background:var(--stage); }
+[data-theme=light] .viewer-toolbar { background:#f5f5f5ee; box-shadow:0 4px 16px #3939391f; border-color:var(--line); }
 [data-theme=light] .viewer-toolbar button { color:var(--text); }
 [data-theme=light] .viewer-toolbar button[aria-pressed=true] { background:var(--accent-soft); color:var(--accent-ink); }
 [data-theme=light] .workspace-note>svg,[data-theme=light] .caption-dot { color:#536d30; }
@@ -168,7 +168,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 [data-theme=light] .workspace-view { color:var(--text); }
 [data-theme=light] .viewport-heading,[data-theme=light] .viewport-heading>span:first-child,[data-theme=light] .viewer-hint { color:var(--muted); }
 [data-theme=light] .caption-dot { background:#5d7b32; }
-[data-theme=light] .workspace-examples { background:#dce1d2; border-color:var(--line); }
+[data-theme=light] .workspace-examples { background:#dddddd; border-color:var(--line); }
 [data-theme=light] .workspace-examples>span,[data-theme=light] .workspace-examples small,[data-theme=light] .workspace-examples button { color:var(--muted); }
 [data-theme=light] .workspace-examples button[aria-pressed=true] { background:var(--surface); color:var(--text); border-color:#698842; }
 [data-theme=light] .viewer-status { background:var(--stage); color:var(--text); }

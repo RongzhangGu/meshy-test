@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import ScrollFloat from './ScrollFloat.jsx';
 import './MaskedHeading.css';
 
-export default function MaskedHeading({ text, src, fillScale = 1.3, parallax = 34, reveal = 'wipe', trigger = 'view', as: Tag = 'h2', className = '', triggerRef, staticMotion = false }) {
+export default function MaskedHeading({ text, src, fillScale = 1.3, parallax = 34, reveal = 'wipe', trigger = 'view', as: Tag = 'h2', className = '', triggerRef, staticMotion = false, once = false, stagger = .045, onRevealChange }) {
   const heading = useRef(null);
 
   useEffect(() => {
@@ -50,6 +50,6 @@ export default function MaskedHeading({ text, src, fillScale = 1.3, parallax = 3
   }, [parallax, trigger, reveal, text]);
 
   return <Tag ref={heading} className={`masked-heading ${className}`} data-reveal={reveal} style={{ '--masked-image': `url("${src}")`, '--masked-fill': `${fillScale * 100}%`, '--masked-scale': fillScale }}>
-    {reveal === 'float' ? <ScrollFloat as="span" textClassName="masked-heading-float" triggerRef={triggerRef} disabled={staticMotion} animationDuration={1.4} ease="back.inOut(2)" scrollStart="top 45%" stagger={.045} scrub={false}>{text}</ScrollFloat> : <span className="masked-heading-fill">{text}</span>}
+    {reveal === 'float' ? <ScrollFloat as="span" textClassName="masked-heading-float" triggerRef={triggerRef} disabled={staticMotion} once={once} animationDuration={1.4} ease="back.inOut(2)" scrollStart="top 45%" stagger={stagger} scrub={false} onRevealChange={onRevealChange}>{text}</ScrollFloat> : <span className="masked-heading-fill">{text}</span>}
   </Tag>;
 }

@@ -1,28 +1,29 @@
-// All 16 original FAQ topics, regrouped by task. Sources and policy differences: CONTENT-AUDIT.md.
+// Original FAQ copy from https://www.meshy.ai/creative-lab, verified 2026-09-20.
+// Retained verbatim for the authorized Meshy test, regrouped by topic.
 export const faqGroups=[
-  {id:'getting-started',title:'Getting started',items:[
-    ['What can I do in Creative Lab?','Personalize a ready-to-make object, then choose an available download or delivery option.'],
-    ['Do I need to know how to model in 3D?','No modeling skills are required. Start with a reference image or a description; Meshy creates the model.'],
-    ['What does it cost to design?','Generation consumes Meshy credits without an additional design fee. Physical orders are priced separately.'],
-    ['How does the Lab differ from the other Meshy tools?','The Lab offers curated object templates. The main toolkit supports more open-ended modeling and editing.'],
-    ['Is this a beta product?','Yes. The catalogue and features are still expanding. Share feedback through Meshy’s community.','https://discord.com/invite/KgD5yVM9Y4','Join the community']
+  {id:'getting-started',title:'Getting Started',items:[
+    ['What is Meshy Creative Lab?','Creative Lab turns your ideas into custom 3D creations — keychains, figurines, lamps, keycaps, fridge magnets, fidgets, and more. Design with AI, then download to 3D-print at home, or have us print and ship it to you.'],
+    ['Do I need any 3D modeling experience?','No. Upload a photo or describe what you want, and our AI handles the 3D design for you.'],
+    ['Is Creative Lab free to use?',"Designing uses your Meshy credits — no extra fee. If you order a physical item, you'll see its price before you pay."],
+    ["How is Creative Lab different from Meshy's other tools?","Meshy's core tools (Image to 3D, Text to 3D) give full control to build any model. Creative Lab is curated, ready-to-make objects you personalize and turn into real things, fast."],
+    ['Is Creative Lab still in beta?',"Creative Lab is in beta — we're actively adding products and features, and your feedback shapes what's next. Join our Discord to share ideas.",'https://discord.com/invite/KgD5yVM9Y4','Discord']
   ]},
-  {id:'files-printing',title:'Files & printing',items:[
-    ['Which formats can I download?','Printable exports include STL and 3MF. Check the download options for your chosen creation.'],
-    ['Can I use my own 3D printer?','FDM and resin workflows are supported. Open the exported file in a compatible slicer and check the model before printing.'],
-    ['Can I change a model before printing it?','Yes. Download an editable 3D file to resize or refine in software such as Blender. Usage remains subject to Meshy’s terms.','https://www.meshy.ai/terms-of-use','Read usage terms']
+  {id:'files-printing',title:'Files & Printing',items:[
+    ['What file formats do I get?','You can download your design in standard 3D-printing formats (3MF and STL), ready for any 3D printer or slicer.'],
+    ['Will it print well on my 3D printer?','The downloaded 3MF/STL files work with any FDM or resin 3D printer or slicer.'],
+    ['Can I edit the file before printing?','Yes. Once downloaded, the file is yours to modify, remix, or scale in any 3D software like Blender — see our Terms of Use for usage rights.','https://www.meshy.ai/terms-of-use','Terms of Use']
   ]},
-  {id:'orders-delivery',title:'Orders & delivery',items:[
-    ['When should I expect my order?','Made-to-order keychains normally ship after 7–10 days. Transit time is additional; check the delivery estimate at checkout.'],
-    ['Is delivery available in my country?','Check your chosen product and enter your destination at checkout to confirm delivery availability.','https://www.meshy.ai/creative-lab','Check product availability'],
-    ['What is the finished object made from?','Materials and finishes depend on the item. Consult the product specification before ordering.'],
-    ['Is shipping charged separately?','The Lab currently advertises delivery included. Confirm the final total at checkout.'],
-    ['How do cancellations and refunds work?','The Lab lists a 24-hour cancellation window. After that, use the order page to contact support about a refund.','https://help.meshy.ai/en/','Get order support']
+  {id:'orders-delivery',title:'Orders & Delivery',items:[
+    ['How long does shipping take?','Most orders are made and shipped within 7–10 days. Delivery time depends on your location — you will see an estimate at checkout.'],
+    ['Where do you ship?','We currently ship to 9 countries: the United States, Canada, Germany, Spain, France, Italy, Brazil, China, and Japan. More regions are coming.'],
+    ['What materials do you print in?','Materials vary by product. Our keychains, for example, pair a full-color or UV-printed resin badge with a genuine leather case. Each item lists its material and finish on its product page.'],
+    ['How much does shipping cost?','Shipping is free — no coupon codes, no hidden fees. The price you see is delivered to your door.'],
+    ['Can I cancel or get a refund?','You can cancel within 24 hours of placing your order. After that, contact support from your order page to arrange a refund.']
   ]},
-  {id:'photos-rights',title:'Photos & usage rights',items:[
-    ['Whose photos can I upload?','Use your own photos, or photos you have permission to use. You must hold the necessary rights to the input.'],
-    ['What rights do I have to my designs?','Design rights depend on Meshy’s terms and your source material. Review the current terms for your intended use.','https://www.meshy.ai/terms-of-use','Review design rights'],
-    ['May I sell the objects I create?','Check commercial and reseller permissions before selling. Meshy’s team can help with licensing and business arrangements.','https://www.meshy.ai/terms-of-use','Check commercial terms']
+  {id:'photos-rights',title:'Photos & Usage Rights',items:[
+    ['Can I use a photo of myself or someone else?',"Yes — for products like figurines, you can upload a photo to personalize your creation. Only upload photos of yourself or people who've given you permission."],
+    ['Who owns the designs I create?','You own the rights to use your custom designs for personal purposes. Commercial use is covered in our Terms of Use.','https://www.meshy.ai/terms-of-use','Terms of Use'],
+    ['Can I sell what I create?','Personal use is always included. For commercial or reseller use, see our Terms of Use or contact us about licensing.','https://www.meshy.ai/terms-of-use','Terms of Use']
   ]}
 ];
 

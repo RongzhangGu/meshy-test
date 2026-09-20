@@ -9,9 +9,9 @@
 | Business | Original screenshot copy restored: selling under the customer's own brand; photo or prompt to a shipped product inside an existing store; widget/API or custom work with the team; launch in days without a printer; brand/store/customer ownership; own manufacturing or Meshy's network. Five fields, form invitation, CTA and no-spam reassurance retained. |
 | Four-step explanation | Four numbered illustrations with concise descriptions |
 | Three value propositions | A compact strip under the workflow, avoiding another large card section |
-| FAQ | All 16 topics retained; vertical grouped accordions, four topic filters plus All topics, question/answer keyword search |
+| FAQ | All 16 original questions and answers restored verbatim on 2026-09-20 for the authorized Meshy test. Four topic filters plus All, question/answer keyword search, and original inline Terms of Use and Discord links retained. |
 | Related features | Six illustrated links to verified official destinations |
-| Closing creation action | Return to the current creation stage |
+| Closing creation action | Open invitation with an interactive 3D capsule, photo upload into the creation chooser, and a secondary return to Browse Creations |
 
 Personal saved work remains before Business. This audit concerns the Creative Lab page body; the global site's large SEO/footer directory is not replicated.
 
@@ -38,7 +38,7 @@ Personal saved work remains before Business. This audit concerns the Creative La
 
 ## Sources and wording
 
-Copy is condensed and rewritten for the interface except Business, whose visible copy follows the user-supplied original-site screenshot (2026-09-18). Workflow illustrations and toolkit artwork reuse the local assets recorded in `public/assets/sources.json`.
+Copy is condensed and rewritten for the interface except Business, whose visible copy follows the user-supplied original-site screenshot (2026-09-18), and FAQ, whose complete questions and answers follow the original Creative Lab page (2026-09-20). Workflow illustrations and toolkit artwork reuse the local assets recorded in `public/assets/sources.json`.
 
 - [Creative Lab](https://www.meshy.ai/creative-lab): content inventory, credit-based design and order topics.
 - [Keychain product](https://www.meshy.ai/creative-lab/keychain): production timing, destination checks and physical-product context.
@@ -47,7 +47,7 @@ Copy is condensed and rewritten for the interface except Business, whose visible
 - [Terms](https://www.meshy.ai/terms-of-use): source permissions and the destination for current usage/licensing details.
 - [Text to 3D](https://www.meshy.ai/features/text-to-3d), [Texturing](https://www.meshy.ai/features/ai-texture-generator), [Image generation](https://www.meshy.ai/features/ai-image-generator), [Animation](https://www.meshy.ai/features/ai-animation-generator): related-tool descriptions and verified URLs.
 
-The home and product pages disagree about delivery coverage and materials. The corresponding FAQ topics remain present, but direct users to the selected product and checkout instead of fixing an inconsistent global promise into the design. Rights questions link to current terms rather than inventing a license. No personal information is transmitted by this prototype.
+The FAQ uses the Creative Lab landing page as its copy source, including its delivery, materials and usage-rights wording. Original Terms of Use and Discord links appear inline in the answers. No personal information is transmitted by this prototype.
 
 ## Verification
 

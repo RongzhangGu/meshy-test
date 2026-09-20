@@ -6,6 +6,7 @@ import { validateImage } from './upload.js';
 import { products } from './products.js';
 import { creationSettings } from './creation-settings.js';
 import LabSections from './LabSections.jsx';
+import BrandJourney from './BrandJourney.jsx';
 import InlineWorkspace from './InlineWorkspace.jsx';
 import Discovery from './Discovery.jsx';
 import LabNavigation, {LabCreationTools} from './LabNavigation.jsx';
@@ -20,6 +21,7 @@ import './discovery.css';
 import './lab-navigation.css';
 import './lab-transition.css';
 import './workflow.css';
+import './light-theme.css';
 
 const sample = {url:'/assets/keychain-hover.webp',filename:'Example photo',isSample:true};
 const findProduct = id => products.find(p => p.id === id);
@@ -109,7 +111,7 @@ function App() {
   function saveCreation() {
     if(hasSaved){showCreations();return;}
     setSaved(previous=>({...previous,[selected]:draft}));
-    setToast('Saved to My creations.');
+    setToast('Saved to My Creations.');
   }
 
   return <>
@@ -120,8 +122,8 @@ function App() {
           {workspace&&<InlineWorkspace key={selected} product={product} studio={studio} stage={stage} setStage={setStage} draft={draft} busy={busy} error={error} progress={progress} isSaved={hasSaved} onCollapse={closeWorkspace} onUpload={()=>upload('replace')} onDrop={drop} onPaste={paste} onSample={useSample} onChange={updateDesign} onGenerate={()=>{setProgress(0);setStage('generating');}} onSave={saveCreation} onExample={example=>updateDesign({example})}/>}
         </Discovery>
       </section>
-      <LabSections saved={saved} onOpenSaved={openSaved} onStartCreation={()=>openWorkspace(selected)} onBrowseCreations={closeWorkspace}/>
-    </main><PhotoChoice photo={pendingPhoto} onChoose={choosePhotoCreation} onClose={cancelPhotoChoice}/><input ref={input} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" tabIndex={-1} aria-label="Choose a local photo" onChange={e=>acceptFile(e.target.files[0])}/>{toast&&<div className="toast" role="status"><Check size={19}/>{toast}</div>}
+      <LabSections saved={saved} onOpenSaved={openSaved} onStartCreation={()=>openWorkspace(selected)} onBrowseCreations={closeWorkspace} onUpload={()=>upload()}/>
+    </main><BrandJourney disabled={workspace || Boolean(pendingPhoto)}/><PhotoChoice photo={pendingPhoto} onChoose={choosePhotoCreation} onClose={cancelPhotoChoice}/><input ref={input} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" tabIndex={-1} aria-label="Choose a local photo" onChange={e=>acceptFile(e.target.files[0])}/>{toast&&<div className="toast" role="status"><Check size={19}/>{toast}</div>}
   </>;
 }
 

@@ -19,7 +19,7 @@ export default function PhotoChoice({photo,onChoose,onClose}) {
   return <dialog ref={dialog} className="photo-choice-dialog" aria-labelledby="photo-choice-title" onCancel={onClose} onClick={event=>{if(event.target===dialog.current)onClose();}}>
     {photo&&<>
       <header>
-        <div><h2 id="photo-choice-title" tabIndex={-1} ref={heading}>What will you make?</h2><p role="status">{query.trim()?`${visibleProducts.length} matching creation${visibleProducts.length===1?'':'s'}.`:`Explore all ${products.length} creations.`}</p></div>
+        <div><h2 id="photo-choice-title" tabIndex={-1} ref={heading}>What Will You Make?</h2><p role="status">{query.trim()?`${visibleProducts.length} matching creation${visibleProducts.length===1?'':'s'}.`:`Explore all ${products.length} creations.`}</p></div>
         <form className="photo-choice-search" role="search" aria-label="Search creation types" onSubmit={event=>event.preventDefault()}>
           <MagnifyingGlass size={20} aria-hidden="true"/>
           <input ref={search} type="search" aria-label="Search creations" aria-controls="photo-choice-options" placeholder="Search creations" value={query} onChange={event=>updateQuery(event.target.value)}/>

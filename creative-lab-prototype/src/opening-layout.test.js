@@ -7,10 +7,10 @@ test('the orbit resolves into fourteen equally sized, non-overlapping, reachable
     const tiles=openingLayout(width,height,1,2.7);
     assert.equal(tiles.length,14);
     if(width>=1200){
-      const layout=catalogueLayout(width),originalWidth=(width-22*4)/5;
+      const layout=catalogueLayout(width);
       assert.equal(layout.columns,6);
       assert.deepEqual([...new Set(tiles.map(tile=>tile.y))].map(y=>tiles.filter(tile=>tile.y===y).length),[6,6,2]);
-      assert.ok(Math.abs(layout.cardHeight-(originalWidth+76)*layout.cardScale)<.01);
+      assert.ok(Math.abs(layout.cardHeight-136*layout.cardScale-layout.cardWidth)<.01,'the creation gets a full square image area above its caption');
     }
     for(const [i,tile] of tiles.entries()) {
       assert.equal(tile.z,0);assert.equal(Math.abs(tile.rotateY),0);assert.equal(Math.abs(tile.rotateZ),0);assert.equal(tile.scale,1);
@@ -22,28 +22,33 @@ test('the orbit resolves into fourteen equally sized, non-overlapping, reachable
   }
 });
 
-test('the desktop orbit rises on the left and descends on the right before unfolding',()=>{
-  const left=openingLayout(1376,772,0,-Math.PI/2)[0];
-  const right=openingLayout(1376,772,0,Math.PI/2)[0];
-  assert.ok(right.x>left.x);
-  assert.ok(right.y-left.y>300);
-  assert.deepEqual(openingLayout(1376,772,1,-Math.PI/2),openingLayout(1376,772,1,Math.PI/2));
+test('desktop reference composition stays fixed and still unfolds into the catalogue',()=>{
+  const initial=openingLayout(1376,772,0,0);
+  for(const phase of [1,2,3,4,5,6]) {
+    assert.deepEqual(openingLayout(1376,772,0,phase),initial);
+  }
+  assert.deepEqual(openingLayout(1376,772,1,0),openingLayout(1376,772,1,6));
 });
 
 
-test('front examples have stronger perspective while final cards share the same scale',()=>{
-  const front=openingLayout(1376,772,0,0)[0];
-  const back=openingLayout(1376,772,0,Math.PI)[0];
+test('featured silhouettes balance the smaller examples and fit shorter desktop windows',()=>{
+  const normal=openingLayout(1376,772,0,0);
+  const short=openingLayout(1376,520,0,0);
   const projectedWidth=tile=>tile.width*tile.scale*1000/(1000-tile.z);
-  assert.ok(projectedWidth(front)>projectedWidth(back)*2);
-  assert.ok(projectedWidth(front)<415);
+  for(const [index,tile] of normal.entries()) {
+    if(tile.opacity===0)continue;
+    assert.ok(projectedWidth(tile)<400);
+    assert.ok(projectedWidth(short[index])<projectedWidth(tile));
+  }
 });
 
 
-test('all fourteen examples stay present from the opening through the complete catalogue',()=>{
+test('the reference composition reveals the two omitted products when the full catalogue unfolds',()=>{
   for(const phase of [0,1.2,3.4]) {
     const opening=openingLayout(1376,772,0,phase);
-    assert.equal(opening.filter(card=>card.opacity>0).length,14);
+    assert.equal(opening.filter(card=>card.opacity>0).length,12);
+    assert.equal(opening[4].opacity,0);
+    assert.equal(opening[7].opacity,0);
     const expanded=openingLayout(1376,772,1,phase);
     assert.equal(expanded.filter(card=>card.opacity===1).length,14);
   }

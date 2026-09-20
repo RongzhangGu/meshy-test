@@ -23,12 +23,12 @@ export default function InlineWorkspace({product, studio, stage, setStage, draft
   const name=draft?.name||'';
   const [imageZoom,setImageZoom]=useState(1);
   if(product.inputKind) return <CatalogueWorkspace product={product} studio={studio} onCollapse={onCollapse} onSave={onSave} isSaved={isSaved}/>;
-  const saveActions=<div className="save-area"><div className="output-note">{product.mode==='ship'?<Package size={19}/>:<Printer size={19}/>}<div><strong>{product.mode==='ship'?'Made & shipped':'Print at home'}</strong></div></div><button className="primary-button" onClick={onSave}>{isSaved?<ArrowRight size={17}/>:<Heart size={17}/>} {isSaved?'View in My creations':'Save to My creations'}</button><a className="workspace-continue" href={`https://www.meshy.ai/creative-lab/${product.route}`} target="_blank" rel="noreferrer">Continue in Meshy <ArrowUpRight size={15}/></a></div>;
+  const saveActions=<div className="save-area"><div className="output-note">{product.mode==='ship'?<Package size={19}/>:<Printer size={19}/>}<div><strong>{product.mode==='ship'?'Made & shipped':'Print at home'}</strong></div></div><button className="primary-button" onClick={onSave}>{isSaved?<ArrowRight size={17}/>:<Heart size={17}/>} {isSaved?'View in My Creations':'Save to My Creations'}</button><a className="workspace-continue" href={`https://www.meshy.ai/creative-lab/${product.route}`} target="_blank" rel="noreferrer">Continue in Meshy <ArrowUpRight size={15}/></a></div>;
   return <article ref={studio} id={`studio-${product.id}`} className={`inline-studio has-create-parameters ${preview&&has3D?'is-editing':''}`} aria-label={`${product.title} creation studio`} tabIndex={-1} onPaste={onPaste} onKeyDown={e=>{if(e.key==='Escape'){e.preventDefault();onCollapse();}}}>
     <div className={`workspace-body ${has3D||(lamp&&!preview)?'model-layout':'reference-layout'} ${preview?'has-preview':'is-setup'}`}>
       <section className="studio-controls" aria-label="Photo and design settings">
         <div className="studio-scroll">
-        <h3>Source photo</h3>
+        <h3>Source Photo</h3>
         <p className="studio-description">{product.input}.</p>
         <div className={`photo-uploader ${draft?.url?'populated':''} ${error?'invalid':''}`} onDragOver={e=>e.preventDefault()} onDrop={onDrop} aria-busy={busy}>
           {busy?<div className="photo-reading" role="status">Reading your photo…</div>:draft?.url?<><button className="workspace-photo" aria-label="Change photo" onClick={onUpload} disabled={stage==='generating'}><img src={draft.url} alt="Selected source photo"/><span><UploadSimple size={17}/>Change photo</span></button>{!draft.isSample&&<div className="workspace-photo-meta"><strong title={draft.filename}>{draft.filename}</strong></div>}</>:<button className="upload-dropzone" onClick={onUpload} aria-label="Click / Drag & Drop / Paste Image" aria-describedby={error?'upload-error':'upload-help'}><span className="upload-image-icon" aria-hidden="true"><ImageSquare size={32}/><ArrowUp size={17}/></span><strong>Click / Drag &amp; Drop / Paste Image</strong><span id="upload-help" className="upload-specs"><span>Supported Formats: .png, .jpg, .jpeg, .webp</span><span>Max size: {settings.maxMB}MB</span></span></button>}
@@ -45,14 +45,14 @@ export default function InlineWorkspace({product, studio, stage, setStage, draft
       </section>
 
       <section className="workspace-view" aria-label={has3D?'3D example viewport':'Design reference'}>
-        {has3D&&<div className="viewport-heading"><span>{lamp?'Example model':'Photo preview'}</span></div>}
+        {has3D&&<div className="viewport-heading"><span>{lamp?'Example Model':'Photo Preview'}</span></div>}
         {has3D?<Suspense fallback={<div className="viewer-status" role="status">Opening 3D workspace…</div>}><ThreePreview product={product.id} example={example} size={size} finish={finish} lit={draft?.lit||false} photoUrl={product.id==='keychain'?draft?.url:undefined}/></Suspense>:<><div className="reference-canvas"><img className="workspace-reference" src={asset(referenceExample?.image||product.image)} alt={`${product.title}${referenceExample?` ${referenceExample.label}`:' design reference'}`} style={{transform:`scale(${imageZoom})`}}/></div><div className="viewer-toolbar" role="group" aria-label="Example image controls"><button aria-label="Zoom out example image" disabled={imageZoom<=0.8} onClick={()=>setImageZoom(z=>Math.max(.8,z-.2))}><Minus size={18}/></button><button aria-label="Zoom in example image" disabled={imageZoom>=1.8} onClick={()=>setImageZoom(z=>Math.min(1.8,z+.2))}><Plus size={18}/></button><i/><button aria-label="Reset example image" onClick={()=>setImageZoom(1)}><ArrowCounterClockwise size={18}/></button></div></>}
         {lamp&&has3D&&<div className="workspace-examples"><span>Examples</span><div>{examples.map((item,i)=><button key={item.name} onClick={()=>onExample(i,item.image)} aria-pressed={example===i} aria-label={`Explore ${item.name} 3D example`}><img src={asset(item.image)} alt=""/><span>{item.name}</span></button>)}</div></div>}
-        {stage==='generating'&&<div className="generation-overlay"><div className="scanning-line"/><Sparkle size={40}/><h3>Preparing preview…</h3><div className="progress-track" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-label="Preparing demo preview"><span style={{transform:`scaleX(${progress/100})`}}/></div></div>}
+        {stage==='generating'&&<div className="generation-overlay"><div className="scanning-line"/><Sparkle size={40}/><h3>Preparing Preview…</h3><div className="progress-track" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-label="Preparing demo preview"><span style={{transform:`scaleX(${progress/100})`}}/></div></div>}
       </section>
 
       {preview&&has3D&&<section className="workspace-inspector" aria-label="Preview settings">
-        <div className="inspector-fields"><h3>{lamp?'Size & light':'Appearance'}</h3>
+        <div className="inspector-fields"><h3>{lamp?'Size & Light':'Appearance'}</h3>
         {lamp?<>
           <label className="dimension-control"><span>Model width <strong>{size} mm</strong></span><input type="range" min="100" max="200" step="10" value={size} aria-label="Model width" onChange={e=>onChange({size:Number(e.target.value)})}/></label>
           <button className="light-toggle" aria-pressed={draft?.lit||false} onClick={()=>onChange({lit:!draft?.lit})}><span>Warm light</span><span className="switch-track"><i/></span></button>

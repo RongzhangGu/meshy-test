@@ -74,7 +74,7 @@
 .business-form-panel input, .business-form-panel select, .business-form-panel textarea { width: 100%; min-height: 41px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--bg); color: var(--text); font: inherit; font-size: 12px; margin-top: 8px; }
 .business-form-panel textarea { resize: vertical; max-height: 200px; min-height: 75px; }
 .business-form-panel textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-.business-form-panel input::placeholder, .business-form-panel textarea::placeholder { color: var(--subtle); }
+
 .business-form-panel .primary-button { margin-top: 1px; justify-content: space-between; }
 .form-footnote { margin: -6px 0 0; font-size: 9px; color: var(--subtle); text-align: center; }
 .inquiry-review { display: flex; gap: 10px; padding: 15px; border-radius: 10px; border: 1px solid var(--line); background: var(--accent-soft); overflow-wrap: anywhere; }
