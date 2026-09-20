@@ -1,6 +1,6 @@
 # Meshy Creative Lab
 
-React + Vite 交互原型，包含 14 类创作目录、照片上传、同页工作区、3D 示例、My Creations、Business、FAQ 和深浅主题。
+React + Vite 交互原型，包含 14 类创作目录、照片上传、同页工作区、3D 示例、My Creations、Orders、Business、FAQ 和深浅主题。
 
 ## 运行与检查
 
@@ -49,6 +49,7 @@ docs/            设计说明、素材来源和现用素材提示词
 | FAQ 文案 | `src/data/faq-data.js` |
 | 首页展开效果 | `src/components/CreativeOpening.jsx`、`src/lib/opening-*.js` |
 | 工作区 | `src/components/InlineWorkspace.jsx`、`CatalogueWorkspace.jsx` |
+| 订单入口、状态与通知 | `src/components/Orders.jsx`、`src/components/orders.css`、`src/lib/order-notifications.js` |
 | 页面与工作区布局 | `src/styles/layout.css` |
 | 导航、流程、主题 | `src/styles/navigation.css`、`workflow.css`、`light-theme.css` |
 
@@ -60,12 +61,14 @@ docs/            设计说明、素材来源和现用素材提示词
 - 钥匙扣是 Three.js 外壳与照片嵌片；灯具使用两个 STL 示例。其他照片类工作区使用参考图，地形和 Pixleap 提供各自的示例及官网入口。
 - Start Design 演示预览流程，不调用 AI 生成接口或扣费。照片不会生成真实 3D 模型。
 - My Creations 保存本次页面会话中的照片、名称和设置，刷新后清空。
+- Orders 使用本地样例数据演示空状态、订单进度、送达通知、时间线和客服入口，不连接真实账户、支付、物流或客服提交。
 - Business 表单只在本地显示摘要，联系链接不携带填写内容。
+- 首次访问默认使用深色主题；切换后的主题会保存在当前浏览器中。
 - 3D 预览按需加载；生产构建仍会提示现有的大型 JavaScript 分块。
 
 ## 设计与素材
 
-- [设计说明](docs/DESIGN-RATIONALE.md)、[设计系统](docs/DESIGN-SYSTEM.md)、[内容核对](docs/CONTENT-AUDIT.md)
+- [改版说明](docs/SUBMISSION-DRAFT.md)、[设计说明](docs/DESIGN-RATIONALE.md)、[设计系统](docs/DESIGN-SYSTEM.md)、[内容核对](docs/CONTENT-AUDIT.md)
 - [图片来源](docs/assets-sources.json)、[模型来源](docs/models-sources.json)
 - [现用 AI 素材提示词](docs/asset-prompts/)、[按钮原始参考](docs/references/SpecularButton.user-source.md)
 
