@@ -60,6 +60,28 @@ export default function App() {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem('meshy-lab-theme-v3', theme);
   }, [theme]);
+  useEffect(() => {
+    let frame;
+    function releasePointerFocus(event) {
+      // Keyboard and assistive activation have detail 0 and keep their focus.
+      if (event.detail === 0) return;
+      // Theme changes can replace the clicked icon before this event bubbles.
+      const control = event.composedPath().find(
+        (node) => node instanceof HTMLElement && node.matches('button, a, summary'),
+      );
+      if (!control) return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        // Let dialogs and navigation move focus before releasing a clicked control.
+        if (document.activeElement === control) control.blur();
+      });
+    }
+    document.addEventListener('click', releasePointerFocus);
+    return () => {
+      document.removeEventListener('click', releasePointerFocus);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
   useEffect(
     () => () => {
       readVersion.current++;

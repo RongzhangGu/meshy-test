@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { ArrowRight, ArrowDown, Sparkle } from '@phosphor-icons/react';
 import {
   getWorkflowScrollState,
@@ -15,6 +16,15 @@ import SpecularButton from './SpecularButton.jsx';
 const compactQuery = '(max-width: 760px), (max-height: 840px)';
 // Equal total stagger keeps both lines on the original 2.165s reveal, regardless of letter count.
 const titleStagger = { amount: 0.765 };
+
+function renderTitleChar(char) {
+  return char === 'i' ? (
+    <span className="workflow-letter-i">
+      ı
+      <span className="workflow-i-dot" data-seed-anchor="workflow-title" />
+    </span>
+  ) : char;
+}
 
 // Original Meshy workflow illustrations; provenance is in docs/assets-sources.json.
 const steps = [
@@ -75,15 +85,16 @@ export default function Workflow({ onStartCreation, precedingRef }) {
     reveal[line] = complete;
     if (!reveal.context || !reveal.main) reveal.completedAt = null;
     else if (reveal.completedAt === null) reveal.completedAt = performance.now();
+    if (demo.current) demo.current.dataset.titleRevealed = String(reveal.context && reveal.main);
     redraw.current();
   }
 
   useLayoutEffect(() => {
     if (readingScroll.current === null) return;
-    const { top, delta } = readingScroll.current;
-    const nextTop = demo.current.querySelector('.workflow-demo').getBoundingClientRect().top;
+    const { top } = readingScroll.current;
+    const nextTop = stage.current.getBoundingClientRect().top;
     window.scrollTo({
-      top: getWorkflowReadingScrollY(scrollY, top, nextTop, delta),
+      top: getWorkflowReadingScrollY(scrollY, top, nextTop),
       behavior: 'instant',
     });
     readingScroll.current = null;
@@ -111,6 +122,7 @@ export default function Workflow({ onStartCreation, precedingRef }) {
     let scrollStep = -1;
     let wheelStop = null;
     let lastWheel = 0;
+    let lastDirection = 0;
     let spread = reduced || compact ? 1 : 0;
     let lastDraw = performance.now();
     const clamp = (value) => Math.min(1, Math.max(0, value));
@@ -118,12 +130,9 @@ export default function Workflow({ onStartCreation, precedingRef }) {
       const t = clamp(value);
       return t * t * (3 - 2 * t);
     };
-    const finishJourney = (delta = 0) => {
+    const finishJourney = () => {
       wheelStop = null;
-      readingScroll.current = {
-        top: section.querySelector('.workflow-demo').getBoundingClientRect().top,
-        delta,
-      };
+      readingScroll.current = { top: stage.current.getBoundingClientRect().top };
       setReading(true);
     };
     const draw = () => {
@@ -141,7 +150,7 @@ export default function Workflow({ onStartCreation, precedingRef }) {
       }
       // Catch fast native scrolling at the title, before any cards or white fill appear.
       if (!reduced && !compact && !titleReady && offset > 0 && offset < distance) {
-        wheelStop = { y: scrollY - offset, since: now, phase: 'title' };
+        wheelStop = { y: scrollY - offset, phase: 'title' };
         window.scrollTo({ top: wheelStop.y, behavior: 'instant' });
         rect = section.getBoundingClientRect();
       }
@@ -203,6 +212,7 @@ export default function Workflow({ onStartCreation, precedingRef }) {
     const releaseWheel = () => {
       wheelStop = null;
       lastWheel = 0;
+      lastDirection = 0;
     };
     const wheel = (event) => {
       if (
@@ -213,30 +223,23 @@ export default function Workflow({ onStartCreation, precedingRef }) {
         Math.abs(event.deltaX) >= Math.abs(event.deltaY)
       )
         return;
-      if (event.target.closest('input,textarea,select,[role="dialog"],.nav-search-panel')) return;
+      if (event.target.closest('input,textarea,select,dialog,[role="dialog"],.nav-search-panel')) return;
       const delta =
         event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? innerHeight : 1);
-      if (delta < 0) {
-        releaseWheel();
-        return;
-      }
       const now = performance.now();
       const quietFor = now - lastWheel;
+      const direction = Math.sign(delta);
+      const inertia = holdWorkflowStep(quietFor, direction, lastDirection);
       lastWheel = now;
+      lastDirection = direction;
       if (wheelStop) {
-        const turning = section.querySelector('.workflow-artwork').dataset.phase === 'turning';
         const hold =
           wheelStop.phase === 'title'
-            ? !isWorkflowTitleReady(titleReveal.current, now) || quietFor < 180
-            : holdWorkflowStep(now - wheelStop.since, quietFor, turning);
+            ? delta > 0 && (!isWorkflowTitleReady(titleReveal.current, now) || inertia)
+            : !expanded.current || inertia;
         if (hold) {
           if (event.cancelable) event.preventDefault();
           schedule();
-          return;
-        }
-        if (wheelStop.step === 3 && expanded.current) {
-          if (event.cancelable) event.preventDefault();
-          finishJourney(delta);
           return;
         }
         wheelStop = null;
@@ -249,18 +252,25 @@ export default function Workflow({ onStartCreation, precedingRef }) {
         delta,
         distance,
         innerHeight,
-        isWorkflowTitleReady(titleReveal.current, now),
+        expanded.current || isWorkflowTitleReady(titleReveal.current, now),
       );
       if (!stop) return;
+      if (stop.exit) {
+        // Remove only the consumed runway before the browser applies this wheel normally.
+        flushSync(finishJourney);
+        return;
+      }
       if (event.cancelable) event.preventDefault();
       wheelStop = {
         y: scrollY + stop.offset - offset,
-        since: now,
         phase: stop.phase,
         step: stop.step,
       };
       window.scrollTo({ top: wheelStop.y, behavior: 'instant' });
-      if (stop.phase !== 'title') dispatch({ type: 'select', step: stop.step });
+      if (stop.phase !== 'title') {
+        scrollStep = stop.step;
+        dispatch({ type: 'scroll', step: stop.step });
+      }
       schedule();
     };
     const resize = () => {
@@ -357,12 +367,12 @@ export default function Workflow({ onStartCreation, precedingRef }) {
           <h2
             className="workflow-title lab-section-title"
             id="workflow-title"
-            aria-label="MESHY CREATIVE LABS: How & Why It Works"
+            aria-label="MESHY CREATIVE LAB: How & Why it Works"
           >
             <MaskedHeading
               as="span"
               className="workflow-title-context"
-              text="MESHY CREATIVE LABS"
+              text="MESHY CREATIVE LAB"
               src="/assets/workflow-choose.webp"
               fillScale={1.3}
               parallax={12}
@@ -376,7 +386,8 @@ export default function Workflow({ onStartCreation, precedingRef }) {
             <MaskedHeading
               as="span"
               className="workflow-title-main"
-              text="How & Why It Works"
+              text="How & Why it Works"
+              renderChar={renderTitleChar}
               src="/assets/workflow-choose.webp"
               fillScale={1.3}
               parallax={34}

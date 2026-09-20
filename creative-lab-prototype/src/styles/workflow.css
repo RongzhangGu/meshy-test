@@ -108,6 +108,25 @@ body {
   opacity: 0.7;
   filter: saturate(0.4);
 }
+.workflow-letter-i {
+  position: relative;
+}
+.workflow-i-dot {
+  position: absolute;
+  width: 0.105em;
+  height: 0.105em;
+  left: 50%;
+  top: 0.31em;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--text);
+}
+.lab-workflow:is([data-seed-title='waiting'], [data-seed-title='docked']) .workflow-i-dot {
+  opacity: 0;
+}
+.lab-workflow:is([data-seed-title='waiting'], [data-seed-title='docked']) .workflow-guide {
+  transition: none;
+}
 .workflow-intro {
   position: absolute;
   top: 78%;
@@ -453,12 +472,23 @@ body {
   height: auto;
   min-height: 0;
 }
-.lab-workflow:is([data-motion='read'], [data-motion='static']) .workflow-sheet {
+/* Preserve the desktop composition's offsets without keeping an empty viewport below it. */
+.lab-workflow[data-motion='read'] .workflow-sheet {
+  position: relative;
+}
+.lab-workflow[data-motion='read'] .workflow-demo {
+  position: relative;
+  left: auto;
+  top: auto;
+  margin: var(--workflow-demo-top) auto 0;
+  transform: none;
+}
+.lab-workflow[data-motion='static'] .workflow-sheet {
   position: relative;
   padding: 0;
   transform: none;
 }
-.lab-workflow:is([data-motion='read'], [data-motion='static']) .workflow-title {
+.lab-workflow[data-motion='static'] .workflow-title {
   --masked-solid: 1;
   position: static;
   transform: none;
@@ -467,13 +497,13 @@ body {
   text-align: center;
   white-space: normal;
 }
-.lab-workflow:is([data-motion='read'], [data-motion='static']) .workflow-title-context {
+.lab-workflow[data-motion='static'] .workflow-title-context {
   position: static;
   transform: none;
   font-size: 13px;
   margin-bottom: 9px;
 }
-.lab-workflow:is([data-motion='read'], [data-motion='static']) .workflow-action {
+.lab-workflow[data-motion='static'] .workflow-action {
   position: relative;
   top: auto;
   opacity: 1;
@@ -483,7 +513,7 @@ body {
 .lab-workflow:is([data-motion='read'], [data-motion='static']) .workflow-intro {
   display: none;
 }
-.lab-workflow:is([data-motion='read'], [data-motion='static']) .workflow-demo {
+.lab-workflow[data-motion='static'] .workflow-demo {
   position: relative;
   left: auto;
   top: auto;

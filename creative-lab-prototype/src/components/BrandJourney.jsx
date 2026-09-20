@@ -1,9 +1,14 @@
 import { useEffect } from 'react';
 import {
   advanceSeedJourney,
+  advanceSeedDrop,
+  getSeedDropRoute,
+  isSeedHeadingVisible,
+  advanceSeedReveal,
   businessMarkMotion,
   pointOnSeedPath,
   seedFlightPosition,
+  workflowEntryPosition,
   smooth01,
 } from '../lib/brand-journey.js';
 import { CAPSULE_TRAVEL_MS, capsuleArrival, capsuleFlightPosition } from '../lib/capsule-motion.js';
@@ -35,6 +40,10 @@ export default function BrandJourney({ disabled }) {
       until = 0;
     let journey = null,
       target = 0;
+    let sectionDrop = null;
+    let contentReveal = null;
+    let workflowHop = null;
+    let workflowDotSize = 0;
     const rect = (node) => {
       const r = node.getBoundingClientRect();
       return {
@@ -82,6 +91,8 @@ export default function BrandJourney({ disabled }) {
         document.getElementById('toolkit-title'),
       ];
       const headings = headingNodes.map((n) => (n ? rect(n) : null));
+      const navHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
+      const titleVisible = (i) => isSeedHeadingVisible(headings[i], scrollY + navHeight, scrollY + height);
       const sheet = elements[3].querySelector('.workflow-sheet'),
         sheetBox = rect(sheet);
       const guide = elements[3].querySelector('.workflow-guide');
@@ -89,56 +100,134 @@ export default function BrandJourney({ disabled }) {
         elements[3].dataset.motion === 'scroll'
           ? Number(getComputedStyle(elements[3]).getPropertyValue('--workflow-spread')) || 0
           : 1;
-      const intro = {
-        x: sheetBox.left + sheetBox.width / 2,
-        y: headings[3].top - 76,
-        size: 22,
-        round: 50,
-        depth: 1,
+      const intro = anchor('workflow-title');
+      if (!intro) return;
+      const titleDot = elements[3].querySelector('[data-seed-anchor="workflow-title"]');
+      const titleLine = rect(titleDot.closest('.scroll-float-text'));
+      const sheetScale = sheetBox.width / sheet.offsetWidth;
+      const titleRevealing = elements[3].dataset.motion === 'scroll'
+        && elements[3].dataset.titleRevealed !== 'true'
+        && boxes[3].top - scrollY <= height * 0.45 + 1;
+      // The sphere waits in the sheet, then the rising i picks it up. Its own
+      // paint stays outside the glyph's opacity, clipping and stretch animation.
+      intro.y = Math.min(intro.y, titleLine.top + titleLine.height * 0.78, scrollY + height - 32);
+      intro.size = parseFloat(getComputedStyle(titleDot).width) * sheetScale;
+      workflowHop = advanceSeedJourney(workflowHop, {
+        target: spread > 0.12 ? 1 : 0,
+        now,
+        duration: 760,
+        reducedMotion: reduced.matches || elements[3].dataset.motion !== 'scroll',
+      });
+      const hopping = workflowHop.from !== workflowHop.to;
+      const localProgress = hopping ? workflowHop.progress : workflowHop.to;
+      if (localProgress === 0) workflowDotSize = intro.size;
+      const local = workflowEntryPosition({
+        a: intro, b: points[3], progress: localProgress,
+        lift: Math.min(140, Math.max(0, Math.min(intro.y, points[3].y) - sheetBox.top - 48)),
+      });
+      const guidePoint = {
+        ...local, size: workflowDotSize + (14 - workflowDotSize) * localProgress, round: 50, depth: 1,
       };
-      const localProgress = smooth01((spread - 0.12) / 0.88);
-      const local = pointOnSeedPath(
-        [intro, { x: points[3].x, y: intro.y }, points[3]],
-        localProgress,
-      );
-      const guidePoint = { ...local, size: 22 - 8 * localProgress, round: 50, depth: 1 };
       if (guide) {
-        const scale = sheetBox.width / sheet.offsetWidth;
-        guide.style.transform = `translate3d(${(local.x - sheetBox.left) / scale}px,${(local.y - sheetBox.top) / scale}px,0) translate(-50%,-50%)`;
-        guide.style.width = guide.style.height = `${guidePoint.size}px`;
+        // The hop owns its clock; a CSS transition would damp away its impulse.
+        guide.style.transition = hopping ? 'none' : '';
+        guide.style.transform = `translate3d(${(local.x - sheetBox.left) / sheetScale}px,${(local.y - sheetBox.top) / sheetScale}px,0) translate(-50%,-50%) rotate(${local.rotation}deg) scale(${local.scaleX},${local.scaleY})`;
+        guide.style.width = guide.style.height = `${guidePoint.size / sheetScale}px`;
       }
       const playground = elements[6].querySelector('.finale-playground');
       points[6].size = 14;
       const dock =
         parseFloat(getComputedStyle(elements[3].querySelector('.workflow-stage')).top) || 84;
-      const openingDock =
-        boxes[0].top +
-        (Number(elements[0].dataset.travel) || 0) -
-        (parseFloat(getComputedStyle(document.querySelector('.opening-sticky')).top) || 84);
+      const catalogDock =
+        parseFloat(getComputedStyle(document.querySelector('.opening-sticky')).top) || 84;
+      const openingDock = boxes[0].top + (Number(elements[0].dataset.travel) || 0) - catalogDock;
       const stops = points.map((p) => p.y - height * 0.35);
       stops[0] = openingDock;
       stops[3] = boxes[3].top - dock;
       stops[6] = boxes[6].top - height * 0.4;
+      // Falling journeys start as the destination heading first enters view.
+      const shelfStart = Math.max(openingDock + 1, headings[1].top - height + 1);
+      const faqStart = headings[4].top - height + 1;
+      const toolkitStart = headings[5].top - height + 1;
       // Trigger once as the next anchor enters the reading area. A small dead
       // zone avoids repeated trips from tiny wheel movements near the boundary.
       let nextTarget = 0;
       for (let i = 1; i < stops.length; i++) {
         const trigger = i === 3 ? sheetBox.top - height * 0.55 : stops[i] - height * 0.2;
-        if (scrollY >= trigger + (target >= i ? -24 : 24)) nextTarget = i;
+        const threshold = i === 1
+          ? Math.max(openingDock + 1, shelfStart - (target >= i ? 24 : 0))
+          : i === 4 || i === 5
+          ? (i === 4 ? faqStart : toolkitStart) - (target >= i ? 24 : 0)
+          : trigger + (target >= i ? -24 : 24);
+        if (scrollY >= threshold) nextTarget = i;
       }
+      // A fast scroll can expose the short shelf and Business together. Show the shelf's
+      // drop while its heading is still visible, then let Business take over below it.
+      const shelfHeadingY = headings[1].top - scrollY;
+      if (nextTarget === 2 && shelfHeadingY >= catalogDock && shelfHeadingY < height)
+        nextTarget = 1;
       const unfold =
         Number(
           getComputedStyle(document.querySelector('.opening-sticky')).getPropertyValue('--unfold'),
         ) || 0;
       const opening = scrollY <= openingDock + 1 && unfold < 1;
       target = opening ? 0 : nextTarget;
-      const marking = daylight && (journey?.from === 2 || journey?.to === 2);
-      journey = advanceSeedJourney(opening ? null : journey, {
-        target,
-        now,
-        reducedMotion: reduced.matches,
-        duration: journey?.to === 6 ? CAPSULE_TRAVEL_MS : marking ? 1400 : 1000,
-      });
+      if (!opening) {
+        for (const source of [0, 4]) {
+          if (!titleVisible(source)) continue;
+          if (target === source + 1) target = source;
+          // Scrolling back to a readable heading docks the dot immediately.
+          if (journey?.from === source && journey.to === source + 1) {
+            journey = { from: source, to: source, progress: 0, lastTime: now };
+            sectionDrop = null;
+          }
+        }
+      }
+      // A direct arrival at a drop destination gets the same visible entrance.
+      if (!journey && (target === 1 || target === 4 || target === 5))
+        journey = { from: target - 1, to: target - 1, progress: 0, lastTime: now };
+      const business = target === 2 || journey?.from === 2 || journey?.to === 2;
+      const enteringWorkflow = journey?.from === 2 && (target === 3 || journey.to === 3);
+      const dropFrom = getSeedDropRoute(journey, target);
+      // Read the painted guide, including an unfinished step transition, rather
+      // than jumping to the new step's target anchor at the moment of departure.
+      const guideBox = dropFrom === 3 ? rect(guide) : null;
+      const sourcePoint = guideBox
+        ? { x: guideBox.left + guideBox.width / 2, y: guideBox.top + guideBox.height / 2 }
+        : points[dropFrom];
+      const dropSource = dropFrom === null ? null : {
+        x: sourcePoint.x, y: Math.max(sourcePoint.y - scrollY, catalogDock + 16),
+      };
+      // FAQ → Toolkit must start a fresh fall after Workflow → FAQ settles.
+      if (sectionDrop?.route !== dropFrom) sectionDrop = null;
+      const dropTrip = !opening && !reduced.matches && dropFrom !== null
+        && journey?.from >= dropFrom && journey?.to <= dropFrom + 1
+        && (journey.from !== target || journey.from !== journey.to);
+      if (dropTrip) {
+        const landing = points[dropFrom + 1];
+        sectionDrop = advanceSeedDrop(sectionDrop || (target === dropFrom
+          ? { x: landing.x, y: landing.y - scrollY } : null), {
+          a: dropSource, b: { x: landing.x, y: landing.y - scrollY }, now, target: target - dropFrom,
+        });
+        sectionDrop.route = dropFrom;
+        journey = sectionDrop.phase === 'settled'
+          ? { from: target, to: target, progress: 0, lastTime: now }
+          : { from: dropFrom, to: dropFrom + 1, progress: sectionDrop.progress, lastTime: now };
+      } else {
+        sectionDrop = null;
+        journey = advanceSeedJourney(opening ? null : journey, {
+          target,
+          now,
+          reducedMotion: reduced.matches,
+          duration: journey?.to === 6
+            ? CAPSULE_TRAVEL_MS
+            : enteringWorkflow
+              ? (daylight ? 1100 : 660)
+              : business
+              ? (daylight ? 650 : 450)
+              : 1000,
+        });
+      }
       const { from, to } = journey;
       const holding = from === to;
       const progress = smooth01(journey.progress);
@@ -166,6 +255,8 @@ export default function BrandJourney({ disabled }) {
         owner = '';
       const a = points[from],
         b = to === 3 ? guidePoint : points[to];
+      const carryingSource = !opening && holding && (from === 0 || from === 4);
+      const pinnedToHeading = carryingSource && titleVisible(from);
       if (opening) {
         const heroNode = document.querySelector('[data-seed-anchor=hero]');
         const hero = rect(heroNode),
@@ -178,22 +269,25 @@ export default function BrandJourney({ disabled }) {
           depth: unfold,
         };
         owner = 'opening';
+      } else if (carryingSource) {
+        // On the landing frame the old route still exists; carry the newly
+        // active heading, never that route's departure point.
+        pose = pinnedToHeading ? a : { ...a, y: Math.max(a.y - scrollY, catalogDock + 16) + scrollY };
+        owner = names[from];
       } else if (holding) {
         pose = daylight && from === 2 ? markPoint(1) : from === 3 ? guidePoint : a;
+      } else if (sectionDrop) {
+        pose = {
+          ...a, x: sectionDrop.x, y: sectionDrop.y + scrollY, recess: 0,
+          size: a.size + (b.size - a.size) * sectionDrop.progress,
+        };
+        owner = names[to];
       } else if (mark.drawing) {
         pose = markPoint(mark.ink);
         owner = 'business';
       } else {
-        let landing;
-        if (to === 1) {
-          const firstLetter = document.createRange();
-          firstLetter.setStart(headingNodes[1].firstChild, 0);
-          firstLetter.setEnd(headingNodes[1].firstChild, 1);
-          const m = rect(firstLetter);
-          landing = { x: m.left + m.width / 2, y: headings[1].top - b.size / 2 - 2 };
-        }
         const bend = Math.min(140, innerWidth * 0.075) * (from === 3 ? -1 : 1);
-        const flight = smooth01(mark.flight);
+        const flight = enteringWorkflow ? mark.flight : smooth01(mark.flight);
         const letterBox = to === 6 ? rect(elements[6].querySelector('.finale-letter')) : null;
         const contact = letterBox
           ? { x: b.x, y: letterBox.top + letterBox.height * 0.32 - b.size / 2 }
@@ -207,18 +301,54 @@ export default function BrandJourney({ disabled }) {
                 bounceHeight: Math.min(64, letterBox.height * 0.5),
                 progress: finale.flight,
               })
-            : seedFlightPosition({ a, b, landing, bend, progress: flight });
+            : enteringWorkflow
+              ? workflowEntryPosition({
+                  a, b, progress: flight,
+                  lift: Math.min(76, Math.max(0, Math.min(a.y, b.y) - scrollY - 96)),
+                })
+              : seedFlightPosition({ a, b, bend, progress: flight });
         const sizeProgress = to === 6 ? smooth01(finale.flight) : flight;
         pose = { ...p, size: a.size + (b.size - a.size) * sizeProgress, round: 50, depth: 1 };
         owner = names[to];
       }
       if (!pose) return;
+      const fadingArrival = holding && contentReveal?.route === from - 1 && contentReveal.opacity < 1;
+      const protectedRoute = !opening && (from === 0 || from === 4) && (holding || to === from + 1)
+        ? from
+        : fadingArrival ? contentReveal.route : null;
+      if (protectedRoute !== null) {
+        const section = elements[protectedRoute];
+        const regions = protectedRoute === 0
+          ? [...section.querySelectorAll('.opening-model')].map((node) => {
+              const card = rect(node);
+              // Keep gaps between rows quiet; reveal beside an incomplete last
+              // row as soon as the last card in the ball's column is cleared.
+              return { ...card, left: card.left - 12, right: card.right + 12, top: headings[0].top };
+            })
+          : [
+              { ...rect(section.querySelector('.faq-results')), top: headings[4].top },
+              ...[...section.querySelectorAll('.faq-help > *')].map((node) => ({ ...rect(node), padding: 2 })),
+            ];
+        const reveal = advanceSeedReveal(contentReveal?.route === protectedRoute ? contentReveal : null, {
+          x: pose.x,
+          y: pose.y,
+          radius: pose.size / 2,
+          regions,
+          now,
+        });
+        contentReveal = { ...reveal, route: protectedRoute };
+      } else contentReveal = null;
       const obscuredByNav = pose.y - scrollY < 76;
-      const hide = reduced.matches || (holding && !opening) || from === 6 || obscuredByNav;
-      el.style.opacity = hide ? 0 : to === 6 ? 1 - finale.handoff : 1;
+      const hide = reduced.matches || pinnedToHeading
+        || (holding && !opening && !carryingSource && !fadingArrival) || from === 6 || obscuredByNav;
+      el.style.opacity = hide ? 0 : contentReveal?.opacity ?? (to === 6 ? 1 - finale.handoff : 1);
       // Paint above each backdrop but below its content. Foreground cards really
       // occlude the sphere; crossing a scene boundary preserves its page position.
       const ribbon = document.querySelector('.ribbon-scene');
+      const dropping = carryingSource || Boolean(sectionDrop);
+      const workflowEntry = enteringWorkflow && !holding;
+      el.classList.toggle('is-dropping', dropping);
+      el.classList.toggle('is-workflow-entry', workflowEntry);
       const layers = [
         ribbon,
         elements[1],
@@ -229,12 +359,14 @@ export default function BrandJourney({ disabled }) {
         elements[5],
         playground,
       ];
-      const host = opening
-        ? ribbon
-        : layers.findLast((node) => {
-            const r = rect(node);
-            return pose.x >= r.left && pose.x <= r.right && pose.y >= r.top && pose.y <= r.bottom;
-          }) || page;
+      const host = dropping || workflowEntry
+        ? page
+        : opening
+          ? ribbon
+          : layers.findLast((node) => {
+              const r = rect(node);
+              return pose.x >= r.left && pose.x <= r.right && pose.y >= r.top && pose.y <= r.bottom;
+            }) || page;
       if (el.parentNode !== host) host.appendChild(el);
       const hostBox = rect(host),
         scaleX = hostBox.width / host.offsetWidth;
@@ -248,7 +380,7 @@ export default function BrandJourney({ disabled }) {
         x = host.clientWidth / 2 + (x - host.clientWidth / 2) / projection;
         y = host.clientHeight / 2 + (y - host.clientHeight / 2) / projection;
       }
-      el.style.transform = `translate3d(${x}px,${y}px,${z}px) translate(-50%,-50%)`;
+      el.style.transform = `translate3d(${x}px,${y}px,${z}px) translate(-50%,-50%) rotate(${pose.rotation || 0}deg) scale(${pose.scaleX || 1},${pose.scaleY || 1})`;
       el.style.width =
         el.style.height = `${(pose.size * (host === ribbon ? 1 : 1 - 0.28 * recess)) / (host === sheet ? 1 : scaleX)}px`;
       el.style.filter = `brightness(${1 - 0.2 * recess}) blur(${0.3 * recess}px)`;
@@ -263,8 +395,11 @@ export default function BrandJourney({ disabled }) {
         section.dataset.seedTravelling = String(!holding && !opening && (i === from || i === to));
         if (i <= active) section.dataset.seedVisited = 'true';
       });
-      // The local sphere is visible before a route arrives, then hands off to the
-      // traveller when leaving; only one of the two owns the visible mark.
+      // Handoff at the same position and size; the sphere never inherits the
+      // hidden letter's opacity. The glyph dot is only a measurement anchor here.
+      elements[3].dataset.seedTitle = localProgress === 0
+        ? holdingWorkflow ? 'docked' : 'waiting'
+        : 'released';
       guide.style.opacity = holdingWorkflow ? 1 : 0;
       const light =
         holding && from === 2
@@ -304,7 +439,9 @@ export default function BrandJourney({ disabled }) {
         elements[6].dataset.seedContact = String(contact);
         elements[6].dispatchEvent(new CustomEvent('lab:seed-contact', { detail: contact }));
       }
-      if (!document.hidden && (now < until || !holding || from !== target))
+      if (!document.hidden && (now < until || !holding || from !== target || fadingArrival
+        || (contentReveal?.since != null && contentReveal.opacity < 1)
+        || (holdingWorkflow && (titleRevealing || hopping))))
         frame = requestAnimationFrame(draw);
     }
     const schedule = () => {
@@ -341,6 +478,7 @@ export default function BrandJourney({ disabled }) {
         .forEach((n) => delete n.dataset.seedTravelling);
       delete document.documentElement.dataset.seedMoving;
       delete document.documentElement.dataset.seedDeparting;
+      delete document.querySelector('.lab-workflow')?.dataset.seedTitle;
       el.remove();
     };
   }, [disabled]);

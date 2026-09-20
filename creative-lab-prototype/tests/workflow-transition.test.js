@@ -10,19 +10,17 @@ import {
   workflowTransition as transition,
 } from '../src/lib/workflow-transition.js';
 
-test('reading layout preserves the visible illustration as the runway and section spacing collapse', () => {
+test('release preserves the entire stage across viewport heights, without adding a wheel jump', () => {
   for (const scrollY of [1800, 4800, 6400])
     for (const beforeTop of [-300, 320, 900]) {
-      // A natural-height Business panel and flow header put the illustration here.
+      // Business can shrink when it unpins, but the workflow composition stays identical.
       const afterDocumentTop = 2250,
         afterTop = afterDocumentTop - scrollY;
       const nextScrollY = getWorkflowReadingScrollY(scrollY, beforeTop, afterTop);
       assert.equal(afterDocumentTop - nextScrollY, beforeTop);
-      assert.equal(
-        afterDocumentTop - getWorkflowReadingScrollY(scrollY, beforeTop, afterTop, 120),
-        beforeTop - 120,
-        'the gesture that exits the last step is preserved',
-      );
+      for (const viewportHeight of [900, 1000, 1200])
+        for (const childOffset of [126, 240, viewportHeight - 200])
+          assert.equal(afterDocumentTop + childOffset - nextScrollY, beforeTop + childOffset);
     }
 });
 
@@ -64,16 +62,34 @@ test('the final step has a full pinned reading interval before the section relea
   }
 });
 
-test('large wheel gestures visit every step before releasing to the following section', () => {
-  let offset = 0;
-  for (let step = 0; step < 4; step++) {
-    const stop = getWorkflowWheelStop(offset, 10000, 4024, 1000);
-    assert.equal(stop.step, step);
-    assert.equal(getWorkflowScrollState(stop.offset, 4024, 1000).step, step);
-    offset = stop.offset;
+test('small and large wheel gestures advance exactly one step in either direction', () => {
+  for (const viewportHeight of [900, 1000, 1200]) {
+    const range = viewportHeight * 4 + 24;
+    for (const delta of [1, 16, 120, 900, 10000]) {
+      let offset = getWorkflowWheelStop(0, 10000, range, viewportHeight).offset;
+      for (const step of [1, 2, 3, 2, 1, 0]) {
+        const current = getWorkflowScrollState(offset, range, viewportHeight).step;
+        const stop = getWorkflowWheelStop(
+          offset,
+          Math.sign(step - current) * delta,
+          range,
+          viewportHeight,
+        );
+        assert.equal(stop.step, step);
+        assert.equal(getWorkflowScrollState(stop.offset, range, viewportHeight).step, step);
+        offset = stop.offset;
+      }
+    }
   }
-  assert.equal(getWorkflowWheelStop(offset, 10000, 4024, 1000), null);
-  assert.equal(getWorkflowWheelStop(offset, -10000, 4024, 1000), null);
+});
+
+test('a fresh gesture exits beyond the first or last step without another scroll runway', () => {
+  const { stepStart, stepRange } = getWorkflowScrollState(0, 4024, 1000);
+  assert.deepEqual(getWorkflowWheelStop(stepStart + 1, -1, 4024, 1000), { exit: true });
+  assert.deepEqual(getWorkflowWheelStop(stepStart + stepRange * 3 + 1, 1, 4024, 1000), {
+    exit: true,
+  });
+  assert.equal(getWorkflowWheelStop(4500, -120, 4024, 1000), null);
   assert.equal(getWorkflowWheelStop(0, 120, 4024, 1000), null);
 });
 
@@ -96,11 +112,32 @@ test('a fast fling stops on the masked title until both lines finish and settle'
   assert.equal(read(4500, false), null);
 });
 
-test('wheel inertia cannot leave a turning card; a fresh gesture can continue after settling', () => {
-  assert.equal(holdWorkflowStep(1400, 300, true), true);
-  assert.equal(holdWorkflowStep(900, 300, false), true);
-  assert.equal(holdWorkflowStep(1800, 40, false), true);
-  assert.equal(holdWorkflowStep(1400, 300, false), false);
+test('wheel inertia is absorbed symmetrically without a timed reading lock', () => {
+  for (const direction of [-1, 1]) {
+    assert.equal(holdWorkflowStep(40, direction, direction), true);
+    assert.equal(holdWorkflowStep(179, direction, direction), true);
+    assert.equal(holdWorkflowStep(180, direction, direction), false);
+    assert.equal(holdWorkflowStep(300, direction, direction), false);
+    assert.equal(holdWorkflowStep(40, -direction, direction), false);
+  }
+});
+
+test('fresh wheel gestures during a flip are queued without skipping an intermediate step', () => {
+  let state = initialWorkflow;
+  for (const step of [1, 2, 3]) state = transition(state, { type: 'scroll', step });
+  for (const step of [1, 2, 3]) {
+    assert.equal(state.next, step);
+    state = transition(state, { type: 'turned' });
+    assert.equal(state.step, step);
+  }
+  assert.equal(state.phase, 'idle');
+  for (const step of [2, 1, 0]) state = transition(state, { type: 'scroll', step });
+  for (const step of [2, 1, 0]) {
+    assert.equal(state.next, step);
+    state = transition(state, { type: 'turned' });
+    assert.equal(state.step, step);
+  }
+  assert.equal(state.phase, 'idle');
 });
 
 test('workflow flips forward and backward through all four steps', () => {

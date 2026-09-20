@@ -103,7 +103,7 @@ export default function LabSections({
               <p>Save your first design and it will appear here.</p>
             </div>
             <button className="quiet-button" onClick={onStartCreation}>
-              Create your first <ArrowRight size={17} />
+              Start Creating <ArrowRight size={17} />
             </button>
           </div>
         )}

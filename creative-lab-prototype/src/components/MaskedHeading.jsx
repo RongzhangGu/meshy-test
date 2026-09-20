@@ -16,6 +16,7 @@ export default function MaskedHeading({
   once = false,
   stagger = 0.045,
   onRevealChange,
+  renderChar,
 }) {
   const heading = useRef(null);
 
@@ -97,6 +98,7 @@ export default function MaskedHeading({
           stagger={stagger}
           scrub={false}
           onRevealChange={onRevealChange}
+          renderChar={renderChar}
         >
           {text}
         </ScrollFloat>

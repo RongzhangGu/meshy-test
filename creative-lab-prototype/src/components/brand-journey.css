@@ -24,6 +24,11 @@
 .ribbon-scene > .brand-seed {
   z-index: auto;
 }
+/* Keep heading-to-heading falls visible across the section backdrops. */
+.brand-seed.is-dropping,
+.brand-seed.is-workflow-entry {
+  z-index: 3;
+}
 .creation-shelf > :not(.brand-seed),
 .business-section,
 .business-story > :not(.seed-beacon, .brand-seed),
@@ -92,6 +97,7 @@
 }
 .shelf-title .seed-shelf {
   opacity: 0;
+  transition: none;
 }
 [data-seed-active='true'] .seed-shelf {
   opacity: 1;
@@ -135,7 +141,6 @@
   mask-composite: intersect;
   filter: blur(18px);
   opacity: var(--seed-light, 0);
-  transition: opacity 0.5s ease;
 }
 .contact-panel {
   position: relative;
@@ -159,7 +164,6 @@
     linear-gradient(#000 0 0);
   mask-composite: exclude;
   opacity: calc(var(--seed-light, 0) * 0.3);
-  transition: opacity 0.5s ease;
 }
 .contact-panel::after {
   content: '';
@@ -172,7 +176,6 @@
   background: radial-gradient(ellipse at 50% 62%, #c4f76b30, transparent 70%);
   filter: blur(6px);
   opacity: calc(var(--seed-light, 0) * 0.25);
-  transition: opacity 0.5s ease;
 }
 .seed-beacon {
   position: absolute;
@@ -187,7 +190,6 @@
   box-shadow:
     0 0 22px 8px #c4f76b44,
     0 0 70px 22px #c4f76b24;
-  transition: opacity 0.5s;
 }
 .business-mark,
 .business-mark-rest {
@@ -607,6 +609,10 @@
   height: 22px;
   pointer-events: none;
   border-radius: 50%;
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.workflow-guide {
   background: radial-gradient(
     circle at 30% 25%,
     #f2ffd6 0%,
@@ -618,14 +624,23 @@
   box-shadow:
     0 0 0 5px #c4f76b0d,
     0 0 24px #b9f64d38;
-  opacity: 0;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .lab-workflow[data-seed-visited='true'] .workflow-guide {
   opacity: 1;
 }
 .lab-workflow[data-seed-visited='true'] .is-current .workflow-step-number::before {
+  /* This marker remains only after the sphere has left the workflow. */
+  background: #53623f;
+  border-color: #53623f;
+  box-shadow: none;
+}
+.lab-workflow:is([data-seed-active='true'], [data-seed-travelling='true']) .is-current .workflow-step-number::before {
+  /* The guide can lag behind its anchor during a step's inertial transition. */
   opacity: 0;
+}
+[data-theme='light'] .lab-workflow[data-seed-visited='true'] .is-current .workflow-step-number::before {
+  background: #8da878;
+  border-color: #8da878;
 }
 :root[data-seed-moving='workflow'] .workflow-guide {
   opacity: 0;

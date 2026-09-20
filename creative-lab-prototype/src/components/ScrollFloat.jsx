@@ -22,6 +22,7 @@ export default function ScrollFloat({
   disabled = false,
   once = false,
   onRevealChange,
+  renderChar,
 }) {
   const containerRef = useRef(null);
   const revealChange = useRef(onRevealChange);
@@ -35,13 +36,13 @@ export default function ScrollFloat({
           <span className="scroll-float-word">
             {Array.from(word).map((char, index) => (
               <span className="char" key={index}>
-                {char}
+                {renderChar ? renderChar(char) : char}
               </span>
             ))}
           </span>
         </React.Fragment>
       )),
-    [text],
+    [text, renderChar],
   );
 
   useEffect(() => {

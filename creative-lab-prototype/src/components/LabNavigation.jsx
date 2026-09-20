@@ -76,9 +76,9 @@ export function LabCreationTools({
           <input
             ref={search}
             type="search"
-            aria-label="Find something to make"
+            aria-label="Search creations"
             aria-controls={open ? 'creation-suggestions' : undefined}
-            placeholder="Find something to make"
+            placeholder="Search creations"
             value={query}
             onFocus={() => setOpen(true)}
             onClick={() => setOpen(true)}
