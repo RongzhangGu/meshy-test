@@ -1650,9 +1650,10 @@ summary:focus-visible {
   }
   .catalog-workbench .workspace-view {
     order: 0;
-    height: clamp(440px, 65svh, 620px);
+    height: clamp(280px, 48svh, 380px);
     min-height: 0;
     flex: none;
+    scroll-margin-top: calc(var(--nav-height) + 16px);
   }
   .catalog-workbench .studio-controls {
     order: 1;
@@ -1665,6 +1666,36 @@ summary:focus-visible {
     border-left: 0;
     border-top: 1px solid var(--line);
     padding: 24px 20px;
+  }
+  .catalog-workbench .workspace-body.is-setup .studio-controls {
+    order: 0;
+    border-top: 0;
+  }
+  .catalog-workbench .workspace-body.is-setup .workspace-view {
+    order: 1;
+    border-top: 1px solid var(--line);
+  }
+  .catalog-workbench .workspace-body.has-preview .workspace-inspector {
+    order: 1;
+  }
+  .catalog-workbench .workspace-body.model-layout.has-preview .studio-controls {
+    order: 2;
+  }
+  .catalog-workbench .studio-controls {
+    scroll-margin-top: calc(var(--nav-height) + 16px);
+  }
+  .catalog-workbench .viewer-toolbar button {
+    width: 44px;
+    height: 44px;
+  }
+  .catalog-workbench input:not([type='radio']):not([type='range']),
+  .catalog-workbench select {
+    font-size: 16px;
+  }
+  .catalog-workbench select,
+  .catalog-workbench .image-count-presets span,
+  .catalog-workbench .edit-source {
+    min-height: 44px;
   }
   .studio-scroll,
   .inspector-fields {
@@ -2588,10 +2619,10 @@ summary:focus-visible {
   .playground-page {
     --section-title-size: 26px;
     --panel-title-size: 24px;
-    --section-gap: 80px;
-    --collection-gap: 56px;
+    --section-gap: 48px;
+    --collection-gap: 24px;
     --panel-inset: 20px;
-    --heading-gap: 24px;
+    --heading-gap: 16px;
     padding-inline: 20px;
   }
   .discovery-scene {
@@ -2608,6 +2639,9 @@ summary:focus-visible {
   .workspace-breadcrumb button,
   .workspace-breadcrumb h1 {
     font-size: 12px;
+  }
+  .workspace-breadcrumb button {
+    min-height: 44px;
   }
   .workspace-progress {
     margin-top: 18px;
@@ -2677,9 +2711,10 @@ summary:focus-visible {
   }
   .business-section {
     grid-template-columns: 1fr;
+    gap: 32px;
   }
   .business-story {
-    padding: 32px var(--panel-inset);
+    padding: 0;
   }
   .section-eyebrow {
     font-size: 11px;
@@ -2717,7 +2752,7 @@ summary:focus-visible {
     font-size: 13px;
   }
   .contact-panel select {
-    font-size: 13px;
+    font-size: 16px;
   }
   .contact-panel form {
     gap: 20px;

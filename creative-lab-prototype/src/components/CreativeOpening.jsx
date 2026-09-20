@@ -42,7 +42,9 @@ export default function CreativeOpening({
     const element = root.current,
       surface = scene.current;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const mobile = matchMedia('(max-width: 760px)');
     const pointer = matchMedia('(hover: hover) and (pointer: fine)');
+    const directCatalogue = () => mobile.matches || reduced.matches || filtering;
     let frame = 0,
       width = 0,
       height = 0,
@@ -56,7 +58,7 @@ export default function CreativeOpening({
       previousY = window.scrollY,
       unlockTimer = 0;
     const landing = () => Math.max(0, top + settledTravel - inset);
-    const canStop = () => !filtering && !reduced.matches && pointer.matches;
+    const canStop = () => !directCatalogue() && pointer.matches;
     function dock() {
       stopUsed = true;
       stop = createCatalogueStop(window.scrollY, landing(), performance.now());
@@ -88,9 +90,11 @@ export default function CreativeOpening({
       width = surface.clientWidth;
       height = element.querySelector('.opening-size-reference').clientHeight;
       top = element.getBoundingClientRect().top + window.scrollY;
-      inset = parseFloat(getComputedStyle(surface).top) || 0;
+      inset = mobile.matches
+        ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) + 24
+        : parseFloat(getComputedStyle(surface).top) || 0;
       travel = parseFloat(getComputedStyle(element).getPropertyValue('--opening-travel')) || 260;
-      settledTravel = Math.round(travel * OPENING_SETTLE);
+      settledTravel = directCatalogue() ? 0 : Math.round(travel * OPENING_SETTLE);
       schedule();
     }
     function draw(time, settled = false) {
@@ -101,10 +105,9 @@ export default function CreativeOpening({
         if (!arriving) stop.landed = true;
       }
       const progress =
-        settled || reduced.matches || filtering
+        settled || directCatalogue()
           ? 1
           : openingProgress(window.scrollY - top + inset, travel);
-      const mobile = window.innerWidth <= 760;
       surface.style.setProperty('--unfold', progress);
       const composition = heroComposition(width, height);
       surface.style.setProperty('--hero-scale', composition.scale);
@@ -114,12 +117,12 @@ export default function CreativeOpening({
       surface.style.setProperty('--detail', ease);
       surface.style.setProperty('--photo-reveal', clamp((progress - 0.38) / 0.42));
       surface.style.setProperty('--arrow-reveal', clamp((progress - 0.65) / 0.3));
-      const layout = catalogueLayout(width, mobile, shownProducts.length);
+      const layout = catalogueLayout(width, mobile.matches, shownProducts.length);
       const catalogueHeight = shownProducts.length ? layout.height : 340;
       const sceneHeight = height + (catalogueHeight - height) * ease;
       surface.style.height = `${sceneHeight}px`;
-      element.style.height = `${sceneHeight + (reduced.matches || filtering ? 0 : settledTravel)}px`;
-      element.dataset.travel = reduced.matches || filtering ? 0 : settledTravel;
+      element.style.height = `${sceneHeight + settledTravel}px`;
+      element.dataset.travel = settledTravel;
       element.dataset.expanded = progress === 1 ? 'true' : 'false';
       element.dataset.browsing = progress > 0.32 ? 'true' : 'false';
       openingLayout(
@@ -127,7 +130,7 @@ export default function CreativeOpening({
         height,
         progress,
         0,
-        mobile,
+        mobile.matches,
         shownProducts.length,
         products.length,
       ).forEach((pose, index) => {
@@ -233,7 +236,7 @@ export default function CreativeOpening({
       }
       if (focusHeading) document.getElementById('page-title')?.focus({ preventScroll: true });
       window.scrollTo({
-        top: Math.max(0, top + (reduced.matches || filtering ? 0 : settledTravel) - inset),
+        top: landing(),
         behavior: instant || reduced.matches ? 'instant' : 'smooth',
       });
       // Instant navigation must be settled before a View Transition captures it.
@@ -255,6 +258,7 @@ export default function CreativeOpening({
     window.addEventListener('keydown', releaseStop);
     window.addEventListener('pointerdown', pointerDown, { passive: true });
     reduced.addEventListener('change', measure);
+    mobile.addEventListener('change', measure);
     measure();
     if (startExpanded || filtering) browse(true);
     return () => {
@@ -267,6 +271,7 @@ export default function CreativeOpening({
       window.removeEventListener('keydown', releaseStop);
       window.removeEventListener('pointerdown', pointerDown);
       reduced.removeEventListener('change', measure);
+      mobile.removeEventListener('change', measure);
     };
   }, [startExpanded, query, catalogueFilter]);
 

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import {
   UploadSimple,
   ImageSquare,
@@ -72,6 +72,26 @@ export default function InlineWorkspace({
   const finish = draft?.finish || '#624632';
   const name = draft?.name || '';
   const [imageZoom, setImageZoom] = useState(1);
+  const sourcePanel = useRef(null);
+  const previewPanel = useRef(null);
+  const previousStage = useRef(stage);
+  useEffect(() => {
+    const previous = previousStage.current;
+    previousStage.current = stage;
+    if (previous === stage || !matchMedia('(max-width: 760px)').matches) return;
+    const panel =
+      stage === 'result'
+        ? previewPanel.current
+        : previous === 'result' && stage === 'setup'
+          ? sourcePanel.current
+          : null;
+    if (!panel) return;
+    panel.focus({ preventScroll: true });
+    panel.scrollIntoView({
+      block: 'start',
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+    });
+  }, [stage]);
   if (product.inputKind)
     return (
       <CatalogueWorkspace
@@ -122,7 +142,12 @@ export default function InlineWorkspace({
       <div
         className={`workspace-body ${has3D || (lamp && !preview) ? 'model-layout' : 'reference-layout'} ${preview ? 'has-preview' : 'is-setup'}`}
       >
-        <section className="studio-controls" aria-label="Photo and design settings">
+        <section
+          ref={sourcePanel}
+          className="studio-controls"
+          aria-label="Photo and design settings"
+          tabIndex={-1}
+        >
           <div className="studio-scroll">
             <h3>Source Photo</h3>
             <p className="studio-description">{product.input}.</p>
@@ -351,8 +376,10 @@ export default function InlineWorkspace({
         </section>
 
         <section
+          ref={previewPanel}
           className="workspace-view"
           aria-label={has3D ? '3D example viewport' : 'Design reference'}
+          tabIndex={-1}
         >
           {has3D && (
             <div className="viewport-heading">

@@ -261,7 +261,7 @@
   .opening-result {
     left: calc(var(--detail) * (var(--source-width) - 2%));
     width: calc(100% - var(--detail) * (var(--source-width) - 2%));
-    height: calc(100% + 60px * var(--detail));
+    height: calc(100% - var(--detail) * var(--result-lift, 0px));
     bottom: calc(var(--detail) * (20px + var(--result-lift, 0px)));
   }
   .kinetic-catalog .opening-model-art.is-device .opening-result {
@@ -572,8 +572,16 @@
 @media (max-width: 760px) {
   .kinetic-catalog {
     --opening-height: 620px;
-    --opening-travel: 220px;
+    --opening-travel: 0px;
     margin-top: 24px;
+  }
+  .opening-sticky {
+    --unfold: 1;
+    --detail: 1;
+    --photo-reveal: 1;
+    --arrow-reveal: 1;
+    position: relative;
+    top: 0;
   }
   .opening-controls {
     align-items: flex-start;
@@ -588,24 +596,12 @@
   .opening-controls .lab-creation-tools {
     gap: 12px;
   }
-  .opening-wordmark {
-    top: 19%;
-    left: 0;
-    right: 0;
-    width: auto;
-    text-align: center;
-    font-size: clamp(66px, 17vw, 116px);
-    line-height: 0.9;
-    letter-spacing: -0.075em;
-  }
-  .opening-wordmark > span + span {
-    transform: none;
-  }
+  .opening-wordmark,
   .opening-sketch-arrow {
     display: none;
   }
   .opening-model {
-    --caption-height: calc(36px + 152px * var(--detail));
+    --caption-height: 108px;
     --caption-inset: 12px;
     border-radius: 10px;
   }
@@ -618,31 +614,16 @@
     font-size: calc(11px + 3px * var(--detail));
   }
   .kinetic-catalog[data-expanded='true'] .opening-model-title {
-    top: 3px;
+    top: 8px;
     height: 36px;
+    z-index: 2;
   }
   .opening-model-description {
-    top: 54px;
-    bottom: auto;
-    left: 0;
-    right: 0;
-    padding: 0 12px;
-    border: 0;
-    background: none;
-    color: var(--text);
-    font-size: 13px;
-    line-height: 18px;
-    text-shadow: none;
-    transform: none;
-    transition: none;
-  }
-  .kinetic-catalog[data-expanded='true'] .opening-model-description {
-    opacity: 1;
-    visibility: visible;
+    display: none;
   }
   .opening-model-cta {
-    bottom: 20px;
-    height: 40px;
+    bottom: 12px;
+    height: 44px;
     font-size: 16px;
   }
   .opening-model-cta svg {
@@ -669,6 +650,15 @@
   }
   .opening-feedback {
     bottom: 6px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 360px) {
+  .opening-model-title {
+    gap: 6px;
+  }
+  .opening-model-badge {
+    padding-inline: 5px;
     font-size: 11px;
   }
 }
@@ -704,7 +694,7 @@
 /* The product scene and card surface share one continuous outer contour. */
 .opening-model {
   --scene-active: 0;
-  --scene-rise: 60px;
+  --scene-rise: 24px;
   --scene-radius: 12px;
 }
 .opening-model::before {

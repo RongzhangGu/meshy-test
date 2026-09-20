@@ -49,7 +49,7 @@ export function heroComposition(width, height) {
 export function catalogueLayout(width, mobile = width < 700, count = 14) {
   const columns = mobile ? 2 : width >= 1200 ? 6 : 3;
   const gap = mobile ? 14 : 22;
-  const rowGap = mobile ? 36 : 76;
+  const rowGap = mobile ? 42 : 36;
   const top = mobile ? 216 : 206;
   const cardWidth = (width - gap * (columns - 1)) / columns;
   const originalWidth = columns === 6 ? (width - gap * 4) / 5 : cardWidth;
@@ -57,7 +57,7 @@ export function catalogueLayout(width, mobile = width < 700, count = 14) {
   const orbitHeight =
     (mobile ? Math.max(138, originalWidth * 0.8) : Math.min(292, originalWidth * 0.8)) * cardScale;
   // Keep original square product scenes uncropped, including their raised top edge.
-  const cardHeight = (originalWidth + (mobile ? 188 - 28 : 136)) * cardScale;
+  const cardHeight = (originalWidth + (mobile ? 108 - 28 : 136)) * cardScale;
   const rows = Math.ceil(count / columns);
   return {
     columns,
