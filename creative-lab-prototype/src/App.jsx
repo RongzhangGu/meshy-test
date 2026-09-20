@@ -10,6 +10,7 @@ import InlineWorkspace from './components/InlineWorkspace.jsx';
 import Discovery from './components/Discovery.jsx';
 import LabNavigation, { LabCreationTools } from './components/LabNavigation.jsx';
 import PhotoChoice from './components/PhotoChoice.jsx';
+import Orders from './components/Orders.jsx';
 import { transitionLabView } from './lib/lab-transition.js';
 
 const sample = { url: '/assets/keychain-hover.webp', filename: 'Example photo', isSample: true };
@@ -29,6 +30,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [progress, setProgress] = useState(0);
   const [saved, setSaved] = useState({});
+  const [ordersOpen, setOrdersOpen] = useState(false);
 
   const [toast, setToast] = useState('');
   const [theme, setTheme] = useState(() => localStorage.getItem('meshy-lab-theme-v3') || 'dark');
@@ -263,6 +265,7 @@ export default function App() {
         onTheme={() => setTheme(theme === 'light' ? 'dark' : 'light')}
         onSaved={showCreations}
         savedCount={Object.keys(saved).length}
+        onOrders={() => setOrdersOpen(true)}
       />
       <main className="playground-page capability-page">
         <section
@@ -335,7 +338,14 @@ export default function App() {
           onUpload={() => upload()}
         />
       </main>
-      <BrandJourney disabled={workspace || Boolean(pendingPhoto)} />
+      <BrandJourney disabled={workspace || Boolean(pendingPhoto) || ordersOpen} />
+      <Orders
+        open={ordersOpen}
+        onOpen={() => setOrdersOpen(true)}
+        onClose={() => setOrdersOpen(false)}
+        onBrowse={closeWorkspace}
+        hidden={Boolean(pendingPhoto)}
+      />
       <PhotoChoice
         photo={pendingPhoto}
         onChoose={choosePhotoCreation}

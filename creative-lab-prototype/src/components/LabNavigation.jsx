@@ -12,6 +12,7 @@ import {
   List,
   MagnifyingGlass,
   Moon,
+  Package,
   Question,
   Sun,
   UploadSimple,
@@ -153,7 +154,7 @@ export function LabCreationTools({
 
 const external = { target: '_blank', rel: 'noreferrer' };
 
-export default function LabNavigation({ onBrowse, theme, onTheme, onSaved, savedCount }) {
+export default function LabNavigation({ onBrowse, theme, onTheme, onSaved, savedCount, onOrders }) {
   const header = useRef(null);
   useEffect(() => {
     const nav = header.current,
@@ -378,6 +379,10 @@ export default function LabNavigation({ onBrowse, theme, onTheme, onSaved, saved
             <img src="/assets/chibi-hover.webp" alt="" width="32" height="32" />
           </summary>
           <div className="meshy-menu-panel meshy-menu-right">
+            <button onClick={onOrders} aria-haspopup="dialog" aria-controls="orders-panel">
+              <Package size={17} />
+              Orders
+            </button>
             <button id="saved-toggle" aria-controls="my-creations-panel" onClick={onSaved}>
               <Images size={17} />
               My Creations{' '}
