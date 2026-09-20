@@ -1,0 +1,171 @@
+{
+  "chibi.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/figurine/figurine_header_1.webp",
+  "chibi-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/figurine/figurine_header_2.webp",
+  "vinyl.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/vinyl-figure/vinyl_figurine_header_1.webp",
+  "vinyl-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/vinyl-figure/vinyl_figurine_header_2.webp",
+  "keychain.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/keychain.webp",
+  "keychain-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/keychain-hover.webp",
+  "pet.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/pet-keepsake.webp",
+  "pet-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/pet-keepsake-hover-new.webp",
+  "brick.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/brick.webp",
+  "brick-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/brick-hover.webp",
+  "lamp.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/lamp.webp",
+  "lamp-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/lamp-hover.webp",
+  "magnet.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/magnet.webp",
+  "magnet-hover.webp": "https://cdn.meshy.ai/ti_w%3A3840%2Cq%3A75/webapp-assets/creative-lab/home/product-card/magnet-hover.webp",
+  "corgi.webp": "https://cdn.meshy.ai/ti_w:256,q:75/webapp-assets/creative-lab/badge-generator/example/inspiration-1.webp",
+  "cat.webp": "https://cdn.meshy.ai/ti_w:256,q:75/webapp-assets/creative-lab/badge-generator/example/inspiration-2.webp",
+  "camera.webp": "https://cdn.meshy.ai/ti_w:256,q:75/webapp-assets/creative-lab/badge-generator/example/inspiration-3.webp",
+  "house.webp": "https://cdn.meshy.ai/ti_w:256,q:75/webapp-assets/creative-lab/badge-generator/example/inspiration-4.webp",
+  "workflow-choose.webp": "https://cdn.meshy.ai/ti_w:1920,q:75/webapp-assets/creative-lab/home/workflow/from-idea-to-object-1-16x9.webp",
+  "workflow-design.webp": "https://cdn.meshy.ai/ti_w:3840,q:75/webapp-assets/creative-lab/home/workflow/workflow-step2.webp",
+  "workflow-preview.webp": "https://cdn.meshy.ai/ti_w:3840,q:75/webapp-assets/creative-lab/home/workflow/from-idea-to-object-3-16x9.webp",
+  "workflow-print.webp": "https://cdn.meshy.ai/ti_w:3840,q:75/webapp-assets/creative-lab/home/workflow/from-idea-to-object-4-16x9.webp",
+  "tool-image.webp": "https://cdn.meshy.ai/ti_w:1920,q:75/landing-assets/og-images/imageto3d_og.webp",
+  "tool-text.webp": "https://cdn.meshy.ai/ti_w:1920,q:75/landing-assets/og-images/textto3d_og.webp",
+  "tool-texture.webp": "https://cdn.meshy.ai/ti_w:1920,q:75/landing-assets/og-images/aitexturing_og.webp",
+  "tool-imagegen.webp": "https://cdn.meshy.ai/ti_w:1920,q:75/landing-assets/og-images/aiimage-og.webp",
+  "tool-animation.webp": "https://cdn.meshy.ai/ti_w:1920,q:75/landing-assets/og-images/animation_og.webp",
+  "tool-print.webp": "https://cdn.meshy.ai/ti_w:1920,q:75/landing-assets/use-cases/use-cases-og-3d-printing.webp",
+  "creation-atlas-cutout-v2.png": {
+    "type": "AI-assisted concept atlas",
+    "tool": "Built-in imagegen",
+    "references": [
+      "keychain.webp",
+      "chibi.webp",
+      "pet.webp",
+      "magnet.webp"
+    ],
+    "prompt": "asset-prompts/creation-atlas-v2-prompt.md",
+    "use": "Opening ribbon and category cards; original Meshy outputs remain in the editor.",
+    "historicalReference": "The earlier exhibition-objects.png concept atlas was used as a layout reference during generation and removed from the final project because it is not displayed."
+  },
+  "keycap.webp": "https://cdn.meshy.ai/ti_w:640,q:75,f:webp/webapp-build-assets/production/_next/static/media/card.1uy_7hj90diob.jpg",
+  "keycap-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75,f:webp/webapp-build-assets/production/_next/static/media/card-hover.45a6qe7ta_ek5.jpg",
+  "pixel.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/pixel.webp",
+  "pixel-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/pixel-hover.webp",
+  "creation-extras-cutout.png": {
+    "type": "AI-assisted transparent reference edit",
+    "tool": "Built-in imagegen",
+    "references": [
+      "keycap.webp",
+      "pixel.webp"
+    ],
+    "prompt": "asset-prompts/creation-extras-prompt.md",
+    "use": "Two supplementary opening sprites. Official reference images remain in the workspace."
+  },
+  "egg.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/egg.webp",
+  "egg-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/egg-hover.webp",
+  "collapsible.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/collapsible.webp",
+  "collapsible-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/collapsible-hover.webp",
+  "plantpot.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/plantpot-new.webp",
+  "plantpot-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/plantpot-hover-new.webp",
+  "terrain.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/terrain-relief-v2.webp",
+  "terrain-hover.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/terrain-relief-hover-2.webp",
+  "pixleap.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/home/product-card/pixleap.webp",
+  "catalogue-cutouts-v2.png": {
+    "type": "AI-assisted transparent reference edit",
+    "tool": "Built-in imagegen",
+    "references": [
+      "egg.webp",
+      "collapsible.webp",
+      "plantpot.webp",
+      "terrain.webp",
+      "pixleap.webp"
+    ],
+    "prompt": "asset-prompts/catalogue-cutouts-prompt.md",
+    "use": "Shared cutouts for the opening, catalogue and upload chooser; unedited references remain in workspaces."
+  },
+  "pet-cutout.png": {
+    "type": "AI-assisted transparent background extraction",
+    "tool": "Built-in imagegen",
+    "references": [
+      "pet.webp"
+    ],
+    "prompt": "asset-prompts/pet-cutout-prompt.md",
+    "use": "Shared Pet Keepsake cutout for the hero, catalogue and upload chooser; original pet.webp remains the hover scene."
+  },
+  "pet-inspiration-1.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/pet-keepsake/examples/1.webp",
+  "pet-inspiration-2.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/pet-keepsake/examples/2.webp",
+  "pet-inspiration-3.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/pet-keepsake/examples/3.webp",
+  "pet-inspiration-4.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/pet-keepsake/examples/4.webp",
+  "brick-inspiration-1.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/brick-figure/inspiration/2.webp",
+  "brick-inspiration-2.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/brick-figure/inspiration/4.webp",
+  "brick-inspiration-3.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/brick-figure/inspiration/1.webp",
+  "brick-inspiration-4.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/brick-figure/inspiration/3.webp",
+  "pixel-inspiration-1.webp": "https://cdn.meshy.ai/ti_w:256,q:75/webapp-build-assets/production/_next/static/media/inspiration-1.18wnjhy2oucjl.webp",
+  "pixel-inspiration-2.webp": "https://cdn.meshy.ai/ti_w:256,q:75/webapp-build-assets/production/_next/static/media/inspiration-2.0xokmika6_fnl.webp",
+  "pixel-inspiration-3.webp": "https://cdn.meshy.ai/ti_w:256,q:75/webapp-build-assets/production/_next/static/media/inspiration-3.1rqmygvc0lgz5.webp",
+  "pixel-inspiration-4.webp": "https://cdn.meshy.ai/ti_w:256,q:75/webapp-build-assets/production/_next/static/media/inspiration-4.3d2du9np3e-sl.webp",
+  "lamp-inspiration-1.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/1.webp",
+  "lamp-inspiration-2.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/2.webp",
+  "lamp-inspiration-3.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/3.webp",
+  "lamp-inspiration-4.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/4.webp",
+  "lamp-inspiration-5.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/5.webp",
+  "lamp-inspiration-6.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/6.webp",
+  "lamp-inspiration-7.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/7.webp",
+  "lamp-inspiration-8.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/8.webp",
+  "lamp-inspiration-9.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/lamp/examples/pics/9.webp",
+  "egg-inspiration-1.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/1.webp",
+  "egg-inspiration-2.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/2.webp",
+  "egg-inspiration-3.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/3.webp",
+  "egg-inspiration-4.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/4.webp",
+  "egg-inspiration-5.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/5.webp",
+  "egg-inspiration-6.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/6.webp",
+  "egg-inspiration-7.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/7.webp",
+  "egg-inspiration-8.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/8.webp",
+  "egg-inspiration-9.webp": "https://cdn.meshy.ai/webapp-assets/creative-lab/twist-egg/examples/pics/9.webp",
+  "collapsible-inspiration-1.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/1.webp",
+  "collapsible-inspiration-2.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/2.webp",
+  "collapsible-inspiration-3.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/3.webp",
+  "collapsible-inspiration-4.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/4.webp",
+  "collapsible-inspiration-5.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/5.webp",
+  "collapsible-inspiration-6.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/6.webp",
+  "collapsible-inspiration-7.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/7.webp",
+  "collapsible-inspiration-8.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/8.webp",
+  "collapsible-inspiration-9.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/clover/examples/render/9.webp",
+  "plantpot-inspiration-1.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/lying_dog.webp",
+  "plantpot-inspiration-2.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/lying_bird.webp",
+  "plantpot-inspiration-3.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/lying_giraff.webp",
+  "plantpot-inspiration-4.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/arch_pine.webp",
+  "plantpot-inspiration-5.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/arch_paw.webp",
+  "plantpot-inspiration-6.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/arch_building.webp",
+  "plantpot-inspiration-7.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/arch_car.webp",
+  "plantpot-inspiration-8.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/char_anime.webp",
+  "plantpot-inspiration-9.webp": "https://cdn.meshy.ai/ti_w:640,q:75/webapp-assets/creative-lab/plantpot/examples/pics/char_cat.webp",
+  "figure-inspiration-1.webp": {
+    "type": "Identical official inspiration shared by Chibi and Vinyl",
+    "sources": [
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/figurine/examples/pics/1.webp",
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/vinyl-figure/examples/pics/1.webp"
+    ]
+  },
+  "figure-inspiration-2.webp": {
+    "type": "Identical official inspiration shared by Chibi and Vinyl",
+    "sources": [
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/figurine/examples/pics/2.webp",
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/vinyl-figure/examples/pics/2.webp"
+    ]
+  },
+  "figure-inspiration-3.webp": {
+    "type": "Identical official inspiration shared by Chibi and Vinyl",
+    "sources": [
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/figurine/examples/pics/3.webp",
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/vinyl-figure/examples/pics/3.webp"
+    ]
+  },
+  "figure-inspiration-4.webp": {
+    "type": "Identical official inspiration shared by Chibi and Vinyl",
+    "sources": [
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/figurine/examples/pics/4.webp",
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/vinyl-figure/examples/pics/4.webp"
+    ]
+  },
+  "figure-inspiration-5.webp": {
+    "type": "Identical official inspiration shared by Chibi and Vinyl",
+    "sources": [
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/figurine/examples/pics/5.webp",
+      "https://cdn.meshy.ai/webapp-assets/creative-lab/vinyl-figure/examples/pics/5.webp"
+    ]
+  }
+}

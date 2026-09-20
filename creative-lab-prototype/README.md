@@ -1,46 +1,72 @@
-# Meshy Creative Lab · photo to object
+# Meshy Creative Lab
 
-Run `npm install` and `npm run dev`. Preview: http://127.0.0.1:5186/.
+React + Vite 交互原型，包含 14 类创作目录、照片上传、同页工作区、3D 示例、My Creations、Business、FAQ 和深浅主题。
 
-## Current experience
+## 运行与检查
 
-Creative Lab opens with fourteen floating finished objects and centered names around a large wordmark, without card backgrounds or source photos. Scrolling 229px (194px on phone) settles those examples into a complete 14-category catalogue and immediately enables its hover previews, including the product overhang above each card. Mouse/trackpad arrival eases into the overview over 360ms, including direct catalogue visits and returns from a workspace. The fully expanded view rests for at least 420ms; a fresh downward gesture then continues smoothly. Continuous input has a maximum 900ms hold after arrival, with no wheel-event or distance quota. Native momentum is temporarily blocked without repeatedly snapping the page back, and hover previews remain active while docked. Upward movement, keyboard navigation, touch and reduced motion remain unrestricted. Search, upload and a persistent category index keep creation discoverable before the animation ends. The top navigation stays visible while scrolling.
+需要 Node.js 22.12+。在本目录执行：
 
-Search and Upload photo live in that persistent navigation. “Find something to make” shows suggestions on focus without moving the page; typing filters the catalogue by creation names and curated use-case keywords such as pet, gift and desk. Clearing search restores all 14 categories. Uploading from the catalogue previews the local photo and shows all 14 creations as larger cutout products with names, without individual card backgrounds. The 12 photo-based creations use the uploaded photo; Terrain and Pixleap have short input hints and open their map/display workspaces. In a workspace, navigation search/upload give way to a lightweight breadcrumb, centered task progress and one Change photo action in the source panel. Category discovery stays on the browsing page. Cancelling a photo replacement preserves the existing draft.
+```bash
+npm ci
+npm run dev
+```
 
-Each tile shows a framed 2D source photo, a directional arrow and a larger 3D concept object that rises above the card edge. The source, arrow and result use separate columns; source images use 28% of the artwork width and retain their original proportions without cropping or following the card height. The result takes the remaining space after the arrow and gaps, giving it roughly twice the source width on desktop. No repeated 2D/3D captions are needed. Row spacing accommodates model overhang. The same photo/object pairing stays together during the ribbon-to-catalogue transition.
+开发地址：<http://127.0.0.1:5186/>。
 
-Every expanded catalogue card reveals its full original product scene on hover or keyboard focus. The image and raised card frame share one contour, with square framing so the original scene is not cropped. The 240ms crossfade reverses on exit; the title and CTA stay fixed. There are no action labels over the image. Phones and devices without hover show these scenes directly; the opening keeps the finished cutouts. Twist Egg and Collapsible Fidget use the original open/closed and flat/expanded comparisons, not simulated 3D mechanisms.
+```bash
+npm test
+npm run build
+npm run preview
+```
 
-Selecting a category opens the existing full-width workspace on the same URL. The Creative Lab breadcrumb returns to the expanded catalogue and retains the source, category, homepage search and settings. A quiet breadcrumb and centered Create → Design → 3D Preview → Checkout indicator replace workspace category browsing; the source panel owns the single photo action. My creations follows, then Business, four illustrated workflow steps, all 16 FAQ topics and six official toolkit links. Dark is the default, with an optional remembered light theme.
+构建输出到 `dist/`，预览地址为 <http://127.0.0.1:4173/>。
 
-The opening, unfolded catalogue and search all contain the same 14 original categories. Custom Keycap and Pixel Fidget add two different object silhouettes. The 20° diagonal orbit has a stronger front/back size difference. As it unfolds, each object moves to the right, a card surface appears, and the source photo and arrow fade in. The final cards extend below the artwork to accommodate a larger category title and a persistent lime Try Now action (Explore for the display device). The original scene replaces the photo/object pair on hover or keyboard focus, with the description over a dark gradient at the bottom of the image; phones show the scene directly and retain the description in the footer. The opening still shows only finished objects and category names. The settled grid uses five columns on wide desktop, three on medium screens and two on phones, with height following the content.
+## 目录与复用
 
-## Real and simulated
+```text
+src/
+  main.jsx       React 挂载、字体和全局样式入口
+  App.jsx        页面状态、上传、工作区切换和保存
+  components/    页面组件与各自的特效样式，不再套 UI 子目录
+  data/          品类、创作参数、搜索词和 FAQ 内容
+  lib/           上传校验、布局计算、滚动和动画逻辑
+  styles/        全局样式，由 index.css 统一确定加载顺序
+tests/           Node.js 原生测试
+public/
+  assets/        页面实际使用的图片
+  fonts/         Caveat 字体及其许可证
+  models/        灯具 STL 示例
+docs/            设计说明、素材来源和现用素材提示词
+```
 
-- Local upload: JPG/PNG/WebP, 10 MB / 40 MP maximum; invalid input preserves the last valid photo.
-- Vinyl Figure uses the verified [original Create parameters](https://www.meshy.ai/creative-lab/vinyl-figurine): four images by default, 1–4 quick choices, 5–8 in More, a 1 min estimate and 6 credits per image. Five original inspiration images can populate the source; changing the source or quantity returns to Create. Click/drop/paste share local validation. Start Design is disabled without a photo and runs the existing local preview demonstration; it does not generate images or spend credits. Saving/reopening restores the image quantity and selected source.
-- Keychain: interactive Three.js case with a flat photo insert. No AI relief generation.
-- Lamp: interactive public sample STL geometry. Ten photo-based workspaces use reference images. Terrain uses a same-page region/reference preview with a link to the full map editor; Pixleap uses a same-page product preview with a product-page link. Neither presents a photo-generation form.
-- Opening: AI-assisted example objects arranged with CSS 3D transforms, not editable 3D meshes. Uploading a photo does not generate an object; viewport labels distinguish photo previews, sample models and example images.
-- Save to My creations: stores actual source/settings for this session, adds or updates the category’s entry in My creations, and updates the navigation count. A confirmation names the destination; the saved button becomes View in My creations and scrolls to that section. Reopening restores the saved settings. Each category has one saved entry; refresh clears them.
-- Business: native form validation and a local inquiry summary. No request is sent; a link opens Meshy’s contact page without transmitting the entered details.
-- No generation API calls, credits, orders or messages. Three.js loads lazily and releases GPU resources. The large lazy-module warning remains.
+常见修改位置：
 
-## Motion and provenance
+| 要修改的内容 | 文件 |
+| --- | --- |
+| 品类名称、图片、链接 | `src/data/products.js` |
+| 数量、额度、示例、样式选项 | `src/data/creation-settings.js` |
+| 搜索关键词与分类 | `src/data/discovery-data.js` |
+| FAQ 文案 | `src/data/faq-data.js` |
+| 首页展开效果 | `src/components/CreativeOpening.jsx`、`src/lib/opening-*.js` |
+| 工作区 | `src/components/InlineWorkspace.jsx`、`CatalogueWorkspace.jsx` |
+| 页面与工作区布局 | `src/styles/layout.css` |
+| 导航、流程、主题 | `src/styles/navigation.css`、`workflow.css`、`light-theme.css` |
 
-The opening uses native CSS 3D and a local animation-frame loop. It pauses on card hover, when hidden or when offscreen. Reduced motion displays the final catalogue immediately. Keyboard focus unfolds the catalogue and pauses rotation. The earlier InfiniteSpiral source and registry remain archived; neither it nor the previous comparison hero is mounted.
+组件专属样式与组件放在一起；全局主题覆盖最后加载。复用项目时复制本目录，重新运行 `npm ci` 即可。无需复制 `node_modules/` 或 `dist/`，无需 API Key。
 
-Entering/leaving a workspace fades the browsing search/upload actions out and the task progress and source-photo action in, with a short content crossfade. Returning restores both browsing tools together. Stable navigation items retain their positions; no duplicate upload control remains after the transition. Native [same-document View Transitions](https://developer.chrome.com/docs/web-platform/view-transitions/same-document) provide the shared snapshots, with direct updates for reduced motion/unsupported browsers and latest-request handling for rapid navigation.
+## 演示范围
 
-The original registry is at `concepts/react-bits/InfiniteSpiral-JS-CSS.registry.json`; it lists no dependencies. The two extra cutouts use `public/assets/creation-extras-cutout.png`, edited from the official keycap and pixel-fidget reference images. The original seven-object atlas is `public/assets/creation-atlas-cutout-v2.png`. Prompts are in `concepts/creation-atlas-v2-prompt.md`. Original Meshy photos, references and models remain unchanged. Sources: `public/assets/sources.json` and `public/models/sources.json`.
+- 上传支持 JPG、PNG、WebP，默认上限 10 MB；部分模型类工作区支持 20 MB，所有图片最多 40 MP。错误输入保留最后一张有效照片。
+- 钥匙扣是 Three.js 外壳与照片嵌片；灯具使用两个 STL 示例。其他照片类工作区使用参考图，地形和 Pixleap 提供各自的示例及官网入口。
+- Start Design 演示预览流程，不调用 AI 生成接口或扣费。照片不会生成真实 3D 模型。
+- My Creations 保存本次页面会话中的照片、名称和设置，刷新后清空。
+- Business 表单只在本地显示摘要，联系链接不携带填写内容。
+- 3D 预览按需加载；生产构建仍会提示现有的大型 JavaScript 分块。
 
-The magnet uses the official Creative Lab source/product pair: `public/assets/magnet-hover.webp` and `public/assets/magnet.webp`. The source retains its complete square composition. The opening, catalogue and upload chooser frame the original product image with an SVG viewport around its wooden frame; no generated artwork is used for this product. The earlier generated `magnet-source.webp` and its prompt remain archived and are not displayed.
+## 设计与素材
 
-Pet Keepsake uses `public/assets/pet-cutout.png`, an imagegen background extraction of the original open-eyed, long-haired sculpture in `pet.webp`. The opening, catalogue and upload chooser share this cutout; hover retains the original studio photograph. The earlier closed-eye atlas variant is no longer displayed. Prompt: `concepts/pet-cutout-prompt.md`.
+- [设计说明](docs/DESIGN-RATIONALE.md)、[设计系统](docs/DESIGN-SYSTEM.md)、[内容核对](docs/CONTENT-AUDIT.md)
+- [图片来源](docs/assets-sources.json)、[模型来源](docs/models-sources.json)
+- [现用 AI 素材提示词](docs/asset-prompts/)、[按钮原始参考](docs/references/SpecularButton.user-source.md)
 
-## Validation
-
-`npm run build` and `npm test`. Browser checks cover source/output selection, search, the full-width editor with unchanged URL, saving and reopening an idea with its name preserved, Business validation/local review, and desktop/mobile layout. These checks do not establish user or business outcomes.
-
-See `CONTENT-AUDIT.md` for source coverage and policy wording, `DESIGN-RATIONALE.md` for the submission argument and `DESIGN-SYSTEM.md` for layout specifications.
+旧版展示组件、废弃图片、生成中间稿和一次性下载脚本已移除。现用原图、透明图集、字体许可证和来源记录保留。Meshy 品牌及第三方素材的权利归各自权利人所有。

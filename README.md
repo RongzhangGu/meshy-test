@@ -38,11 +38,11 @@ npm run preview
 
 ## 项目资料
 
-- [详细功能与演示边界](creative-lab-prototype/README.md)
-- [设计说明](creative-lab-prototype/DESIGN-RATIONALE.md)
-- [设计系统](creative-lab-prototype/DESIGN-SYSTEM.md)
-- [内容核对](creative-lab-prototype/CONTENT-AUDIT.md)
-- [图片来源](creative-lab-prototype/public/assets/sources.json)与[模型来源](creative-lab-prototype/public/models/sources.json)
+- [目录、复用指南与演示边界](creative-lab-prototype/README.md)
+- [设计说明](creative-lab-prototype/docs/DESIGN-RATIONALE.md)
+- [设计系统](creative-lab-prototype/docs/DESIGN-SYSTEM.md)
+- [内容核对](creative-lab-prototype/docs/CONTENT-AUDIT.md)
+- [图片来源](creative-lab-prototype/docs/assets-sources.json)与[模型来源](creative-lab-prototype/docs/models-sources.json)
 
 源码位于 `creative-lab-prototype/src/`，运行所需素材位于 `creative-lab-prototype/public/`。依赖、构建产物和临时文件不纳入版本控制。
 

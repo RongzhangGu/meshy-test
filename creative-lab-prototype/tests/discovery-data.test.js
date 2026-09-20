@@ -1,0 +1,50 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { matchingCreations } from '../src/data/discovery-data.js';
+test('catalogue filters match the original groups and intersect with search', () => {
+  assert.deepEqual(matchingCreations('', 'new'), [
+    'chibi',
+    'vinyl',
+    'pet',
+    'brick',
+    'pixel',
+    'egg',
+    'collapsible',
+    'plantpot',
+    'terrain',
+    'pixleap',
+  ]);
+  assert.deepEqual(matchingCreations('', 'popular'), ['keychain', 'chibi', 'lamp', 'keycap']);
+  assert.deepEqual(matchingCreations('', 'ship'), ['keychain', 'chibi', 'pixleap']);
+  assert.deepEqual(matchingCreations('', 'print'), [
+    'chibi',
+    'pet',
+    'lamp',
+    'pixel',
+    'egg',
+    'collapsible',
+    'plantpot',
+    'terrain',
+  ]);
+  assert.deepEqual(matchingCreations('figure', 'ship'), ['chibi']);
+  assert.deepEqual(matchingCreations('lamp', 'ship'), []);
+  assert.deepEqual(matchingCreations('lamp', 'all'), ['lamp']);
+});
+test('search identifies matching creations without changing the fourteen available types', () => {
+  assert.equal(matchingCreations('').length, 14);
+  assert.deepEqual(matchingCreations('  LAMP  '), ['lamp']);
+  assert.deepEqual(matchingCreations('灯'), ['lamp']);
+  assert.deepEqual(matchingCreations('figure'), ['chibi', 'vinyl', 'brick']);
+  assert.deepEqual(matchingCreations('键帽'), ['keycap']);
+  assert.deepEqual(matchingCreations('像素'), ['pixel']);
+  assert.deepEqual(matchingCreations('花盆'), ['plantpot']);
+  assert.deepEqual(matchingCreations('地图'), ['terrain']);
+  assert.deepEqual(matchingCreations('扭蛋'), ['egg']);
+  assert.deepEqual(matchingCreations('可折叠'), ['collapsible']);
+  assert.deepEqual(matchingCreations('相框'), ['pixleap']);
+  assert.deepEqual(matchingCreations('desk'), ['lamp', 'keycap', 'plantpot']);
+  assert.deepEqual(matchingCreations('pet gift'), ['keychain', 'keycap']);
+  assert.ok(matchingCreations('pet').includes('pet'));
+  assert.deepEqual(matchingCreations('spaceship'), []);
+  assert.equal(matchingCreations('').length, 14);
+});

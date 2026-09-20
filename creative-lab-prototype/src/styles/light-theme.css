@@ -1,0 +1,434 @@
+/* Neutral daylight materials. Every rule is scoped to preserve the dark presentation. */
+:root[data-theme='light'] {
+  --bg: #ededed;
+  --surface: #f3f3f3;
+  --surface-raised: #e5e5e5;
+  --text: #292929;
+  --muted: #636363;
+  --subtle: #797979;
+  --line: #d2d2d2;
+  --accent: #5a9415;
+  --accent-fill: #85df35;
+  --accent-fill-hover: #96e64b;
+  --accent-ink: #132000;
+  --accent-soft: #e2f2c9;
+  --accent-text: #447513;
+  --modal: #f1f1f1;
+  --stage: #e5e5e5;
+  --stage-ink: #383838;
+  --photo-shadow: 0 12px 18px #3333331c;
+  --shadow: 0 12px 32px #30303010;
+}
+
+/* Keep the brand accents vivid; contrast comes from the neutral surfaces. */
+[data-theme='light'] .meshy-workspace {
+  background: var(--accent-fill);
+  color: var(--accent-ink);
+  box-shadow: none;
+}
+[data-theme='light'] .meshy-billing {
+  background: #e3e3e3;
+  box-shadow: inset 0 0 0 1px #c1c1c14d;
+}
+[data-theme='light'] .meshy-credits {
+  color: #70541f;
+}
+[data-theme='light'] :is(.meshy-current > summary, .meshy-agent) {
+  color: var(--accent-text);
+}
+[data-theme='light'] :is(.meshy-menu-panel, .nav-search-panel) {
+  box-shadow: 0 12px 36px #3030301a;
+}
+
+/* Bright action fills; smaller marks use a deeper green for daylight contrast. */
+[data-theme='light'] .specular-button {
+  color: var(--accent-ink);
+  background: var(--accent-fill);
+  box-shadow: 0 3px 8px #30303012;
+}
+[data-theme='light'] .specular-button::before {
+  background: var(--accent-fill-hover);
+  box-shadow: none;
+}
+[data-theme='light'] .specular-button::after {
+  display: none;
+}
+[data-theme='light'] .specular-button__fx {
+  display: none;
+}
+[data-theme='light'] .specular-button:not(:disabled):is(:hover, :focus-visible),
+[data-theme='light'] button:focus-visible .specular-button {
+  box-shadow: 0 5px 14px #3030301f;
+}
+[data-theme='light'] .primary-button:not(:disabled) {
+  background: var(--accent-fill);
+  border-color: transparent;
+}
+[data-theme='light'] .primary-button:hover:not(:disabled) {
+  background: var(--accent-fill-hover);
+  box-shadow: none;
+}
+[data-theme='light'] :is(button, a, input, select, textarea):focus-visible {
+  outline-color: var(--accent-text);
+}
+[data-theme='light'] .glow-btn:not(:disabled) {
+  --glow-color: var(--accent-fill);
+  color: var(--accent-ink);
+  background: var(--accent-fill);
+  border: 0;
+  box-shadow: none;
+}
+[data-theme='light'] .glow-btn::before {
+  background: var(--accent-fill-hover);
+}
+[data-theme='light'] .glow-btn:not(:disabled):is(:hover, :focus-visible),
+[data-theme='light'] button:focus-visible .glow-btn {
+  box-shadow: 0 5px 14px #3030301f;
+}
+[data-theme='light'] .glow-btn[data-state='clicked']:not(:disabled),
+[data-theme='light'] button.glow-btn:active:not(:disabled),
+[data-theme='light'] button:active .glow-btn {
+  box-shadow: none;
+}
+
+/* White surfaces with the approved 15% neutral gradient. */
+[data-theme='light'] .opening-output {
+  filter: drop-shadow(0 10px 10px #3131312e);
+}
+[data-theme='light'] .opening-source img {
+  border: 0;
+  box-shadow:
+    0 2px 3px #31313112,
+    0 8px 16px -7px #3131314d;
+}
+[data-theme='light'] .opening-model {
+  --catalogue-surface: #ffffff;
+  border: 0;
+}
+[data-theme='light'] .opening-model::before {
+  background:
+    linear-gradient(
+      to top,
+      var(--catalogue-surface) 0 var(--caption-height),
+      transparent calc(var(--caption-height) + 72px)
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      color-mix(in srgb, #ffffff, black 5.25%) 42%,
+      color-mix(in srgb, #ffffff, black 15%) 100%
+    );
+  border: 0;
+  box-shadow:
+    inset 0 1px 0 #ffffffcc,
+    0 2px 3px #3131310a,
+    0 16px 28px -20px #3131314d;
+}
+[data-theme='light'] .opening-product-scene {
+  top: calc(-1px - var(--scene-rise));
+  left: -1px;
+  right: -1px;
+  border-radius: var(--scene-radius) var(--scene-radius) 0 0;
+}
+[data-theme='light'] .opening-model-caption {
+  border: 0;
+}
+[data-theme='light'] .opening-model:is(:hover, :focus-visible)::before {
+  box-shadow:
+    inset 0 1px 0 #ffffffcc,
+    0 3px 5px #3131310a,
+    0 20px 32px -20px #31313157;
+}
+[data-theme='light'] .opening-model-cta.glow-btn {
+  background: linear-gradient(180deg, #a6ed59, #85df35 60%, #7ad22c);
+  box-shadow:
+    inset 0 1px 0 #e6ffc199,
+    0 2px 3px #31571912;
+}
+[data-theme='light'] .opening-model-cta.glow-btn::before {
+  background: linear-gradient(180deg, #b6f66f, #96e64b);
+}
+/* Keyboard focus is indicated by the title, without adding a card outline. */
+[data-theme='light'] .kinetic-catalog[data-expanded='true'] .opening-model:focus-visible::before {
+  outline: none;
+}
+[data-theme='light'] .opening-model:focus-visible .opening-catalogue-name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+[data-theme='light'] .opening-note {
+  color: #7d7d7d;
+}
+[data-theme='light'] .opening-model-badge--hot {
+  color: #352400;
+  background: linear-gradient(105deg, #b4e75a, #ffa8c4);
+  box-shadow: none;
+}
+[data-theme='light'] .opening-model-badge--new {
+  background: #ffe98b;
+  box-shadow: none;
+}
+[data-theme='light'] .opening-model-badge--new > span {
+  color: #795000;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+/* Match the full card surface and overlap the caption to prevent seams. */
+[data-theme='light'] .opening-model-description {
+  left: -1px;
+  right: -1px;
+  bottom: calc(100% - 1px);
+  color: var(--text);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--catalogue-surface) 92%, transparent) 38%,
+    var(--catalogue-surface)
+  );
+  text-shadow: none;
+}
+[data-theme='light'] .opening-filters button[aria-pressed='true'],
+[data-theme='light'] .faq-topics button[aria-pressed='true'] {
+  color: var(--accent-text);
+}
+[data-theme='light'] .opening-controls .nav-search form:focus-within {
+  border-color: var(--accent-text);
+}
+
+/* A bright pen stroke replaces the beam on the daylight paper surface. */
+[data-theme='light'] .business-section {
+  --business-accent: var(--accent-text);
+}
+[data-theme='light'] .business-story::before,
+[data-theme='light'] .business-story::after,
+[data-theme='light'] .contact-panel::before,
+[data-theme='light'] .contact-panel::after {
+  content: none;
+}
+[data-theme='light'] .seed-beacon {
+  visibility: hidden;
+}
+[data-theme='light'] .business-promise {
+  position: relative;
+  display: inline-block;
+}
+[data-theme='light'] .business-mark {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 2px);
+  width: 100%;
+  height: 16px;
+  overflow: visible;
+  pointer-events: none;
+}
+[data-theme='light'] .business-mark path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--business-mark-progress, 0));
+  opacity: clamp(0, calc(var(--business-mark-progress, 0) * 100), 1);
+}
+[data-theme='light'] .business-mark-rest {
+  display: block;
+  position: absolute;
+  left: 100%;
+  top: calc(100% + 12px);
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: var(--business-mark-rest, 0);
+  pointer-events: none;
+}
+[data-theme='light'] .contact-panel {
+  border: 0;
+  box-shadow: 0 16px 40px -24px #3f3f3f26;
+}
+[data-theme='light'] .contact-panel :is(input, textarea) {
+  background: #fafafa;
+  border-color: #d7d7d7;
+  box-shadow: inset 0 1px 2px #49494906;
+}
+[data-theme='light'] .contact-panel .contact-select select {
+  background: var(--surface-raised);
+  border-color: #cacaca;
+  box-shadow: inset 0 1px 0 #ffffff80;
+}
+[data-theme='light'] .contact-panel :is(input, textarea, select):focus {
+  border-color: var(--accent);
+  box-shadow: none;
+  outline: 0;
+}
+
+/* Workflow darkens only one tonal step, then returns to the page grey. */
+[data-theme='light'] .business-workflow {
+  --workflow-bg: #e0e0e0;
+}
+[data-theme='light'] .business-stage::before {
+  background: linear-gradient(to bottom, var(--bg), #e7e7e7 45%, var(--workflow-bg));
+}
+[data-theme='light'] .lab-workflow {
+  color: var(--text);
+}
+[data-theme='light'] .workflow-sheet {
+  box-shadow: 0 -24px 64px rgb(72 72 72 / calc(0.05 * (1 - var(--workflow-entry))));
+}
+/* Settled sections share the continuous background below the business gradient. */
+[data-theme='light']
+  .lab-workflow:is([data-motion='read'], [data-motion='static'])
+  .workflow-sheet {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+[data-theme='light'] .workflow-title :is(.masked-heading-fill, .masked-heading-float .char) {
+  background-image:
+    linear-gradient(rgb(41 41 41 / var(--masked-solid, 0)), rgb(41 41 41 / var(--masked-solid, 0))),
+    var(--masked-image);
+  filter: brightness(0.82) saturate(1.25) contrast(1.08);
+}
+[data-theme='light'] .workflow-intro > span {
+  color: var(--muted);
+}
+[data-theme='light'] .workflow-face {
+  background: #d7d7d7;
+  box-shadow: 0 14px 36px -18px #3838383d;
+}
+[data-theme='light'] .workflow-step {
+  color: #707070;
+}
+[data-theme='light'] .workflow-step-number {
+  color: #747474;
+}
+[data-theme='light'] .workflow-step:hover,
+[data-theme='light'] .workflow-step[aria-current='step'] {
+  color: var(--text);
+}
+[data-theme='light'] .workflow-step-copy p {
+  color: #5c5c5c;
+}
+[data-theme='light'] .workflow-step-copy .workflow-benefit,
+[data-theme='light'] .workflow-step[aria-current='step'] .workflow-step-number {
+  color: var(--accent-text);
+}
+[data-theme='light'] .workflow-steps li:not(:last-child)::before {
+  background: #c1c1c1;
+}
+[data-theme='light'] .workflow-steps li:not(:last-child)::after {
+  background: var(--accent);
+}
+[data-theme='light'] .workflow-step-number::before {
+  border-color: #a3a3a3;
+  background: var(--workflow-bg);
+}
+[data-theme='light'] .workflow-steps .is-past .workflow-step-number {
+  color: #637d52;
+}
+[data-theme='light'] .workflow-steps .is-past .workflow-step-number::before {
+  border-color: #8da878;
+  background: #8da878;
+}
+[data-theme='light'] .workflow-step[aria-current='step'] .workflow-step-number::before {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: none;
+}
+[data-theme='light'] .workflow-start.specular-button {
+  background: var(--accent-fill);
+}
+[data-theme='light'] .lab-faq {
+  --faq-divider: var(--line);
+  --faq-search-line: #929292;
+}
+[data-theme='light'] .lab-faq::before {
+  background: linear-gradient(to bottom, #e0e0e0, var(--bg));
+}
+
+/* Toolkit plaques share the light surface instead of carrying a black bar. */
+[data-theme='light'] .toolkit-card-title {
+  color: var(--text);
+  background: #efefeff2;
+  border-color: #cbcbcbb3;
+  box-shadow:
+    0 5px 14px #3f3f3f16,
+    inset 0 1px 0 #f7f7f7b3;
+}
+[data-theme='light'] .toolkit-card-title > svg {
+  color: var(--accent-text);
+}
+[data-theme='light'] .toolkit-link:is(:hover, :focus-visible) .toolkit-card-title {
+  background: #e7e7e7f5;
+  border-color: #a7a7a7;
+}
+[data-theme='light'] .tilted-card-image {
+  box-shadow: 0 10px 24px #3f3f3f12;
+}
+[data-theme='light'] .toolkit-link:is(:hover, :focus-visible) .tilted-card-image {
+  box-shadow: 0 18px 32px #3f3f3f26;
+}
+[data-theme='light'] .tilted-card-caption {
+  background: #efefeff5;
+  border-color: #c9c9c9;
+  color: var(--text);
+  box-shadow: 0 8px 20px #3f3f3f1a;
+}
+
+/* Opaque green marks and a clean, unlit backdrop for the daylight sculpture. */
+[data-theme='light'] .brand-seed {
+  background: var(--accent);
+}
+[data-theme='light'] .brand-seed::after,
+[data-theme='light'] .workflow-guide {
+  background: radial-gradient(
+    circle at 30% 24%,
+    #dcefb6 0%,
+    #a0d34b 20%,
+    #5a9415 56%,
+    #417210 100%
+  );
+  box-shadow: inset -1px -2px 3px #30550d26;
+}
+[data-theme='light'] .seed-rest {
+  box-shadow: none;
+}
+[data-theme='light'] .creation-finale h2 .finale-line {
+  color: var(--accent-text);
+}
+[data-theme='light'] .finale-halo {
+  --orbit-color: #65952b;
+  --orbit-star: #447513;
+  background: none;
+}
+[data-theme='light'] .finale-halo::before {
+  content: none;
+}
+[data-theme='light'] .orbit-aura,
+[data-theme='light'] .orbit-trail-glow {
+  display: none;
+}
+[data-theme='light'] .orbit-line {
+  stroke: var(--orbit-color);
+  opacity: 0.3;
+}
+[data-theme='light'] .orbit-echo {
+  opacity: 0.12;
+}
+[data-theme='light'] .orbit-trail-star {
+  filter: none;
+}
+[data-theme='light'] .capsule-fallback {
+  background: radial-gradient(circle at 30% 24%, #edf5d9, #c8e77b 18%, #9ed52b 55%, #75ac1e 85%);
+  box-shadow: inset -6px -12px 22px #40631926;
+}
+
+@media (max-width: 760px) {
+  [data-theme='light'] .opening-model-description {
+    bottom: auto;
+    background: none;
+  }
+}

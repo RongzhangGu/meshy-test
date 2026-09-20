@@ -1,0 +1,552 @@
+/* Shared reset, theme defaults and controls. Page overrides live in layout.css;
+   the final light-theme material overrides are loaded last by index.css. */
+:root {
+  font-family:
+    'Manrope Variable',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color-scheme: dark;
+  --bg: #10110f;
+  --surface: #1b1c19;
+  --surface-raised: #252721;
+  --text: #f4f5ee;
+  --muted: #a3a69b;
+  --subtle: #898d80;
+  --line: #31342c;
+  --accent: #c4f76b;
+  --accent-ink: #19230b;
+  --accent-soft: #242f19;
+  --error: #ffb2a1;
+  --modal: #1b1d18;
+  --shadow: 0 22px 55px #0003;
+  --ease: cubic-bezier(0.2, 0.75, 0.2, 1);
+  font-synthesis: none;
+  scroll-behavior: smooth;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f5f1;
+  --surface: #fff;
+  --surface-raised: #e8ebe2;
+  --text: #20251a;
+  --muted: #5e6654;
+  --subtle: #646b5d;
+  --line: #d7ddce;
+  --accent: #bce85e;
+  --accent-ink: #19230b;
+  --accent-soft: #e5efd7;
+  --error: #a53623;
+  --modal: #fff;
+  --shadow: 0 22px 55px #2e422019;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  color: inherit;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+button {
+  border: 0;
+}
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+svg {
+  flex-shrink: 0;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+button,
+a {
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.25s,
+    transform 0.35s var(--ease);
+}
+.site-header {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  border-bottom: 1px solid var(--line);
+  padding: 0 48px;
+  background: var(--bg);
+}
+.brand {
+  flex-shrink: 0;
+}
+.brand img {
+  width: 105px;
+  height: 42px;
+}
+.site-header nav {
+  align-self: stretch;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+.site-header nav a {
+  height: 100%;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  position: relative;
+  color: var(--muted);
+}
+.site-header nav a:hover {
+  color: var(--text);
+}
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+footer {
+  border-top: 1px solid var(--line);
+  padding: 24px 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--subtle);
+  font-size: 11px;
+}
+footer a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+footer a:hover {
+  color: var(--text);
+}
+.photo-uploader {
+  border: 1px dashed #59604e;
+  border-radius: 12px;
+  min-height: 142px;
+  background: var(--bg);
+}
+.photo-uploader > button {
+  width: 100%;
+  height: 142px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: transparent;
+}
+.photo-uploader > button > svg {
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+.photo-uploader strong {
+  font-size: 13px;
+}
+.photo-uploader > button > span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.photo-uploader:hover {
+  border-color: var(--accent);
+}
+.photo-uploader.populated {
+  border-style: solid;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 10px;
+  min-height: 92px;
+}
+.photo-uploader.populated > img {
+  height: 69px;
+  width: 69px;
+  border-radius: 7px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.photo-uploader.populated > div {
+  min-width: 0;
+  flex: 1;
+}
+.photo-uploader.populated strong {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+.photo-uploader.populated span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 10px;
+  color: var(--muted);
+}
+.photo-uploader.populated span svg {
+  color: var(--accent);
+}
+.photo-uploader.populated > button {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.input-error {
+  color: var(--error);
+  font-size: 12px;
+  line-height: 1.6;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 10px 0 15px;
+}
+.input-error svg {
+  margin-top: 2px;
+}
+.photo-uploader.invalid {
+  border-color: var(--error);
+}
+.photo-reading {
+  padding: 35px 20px;
+  color: var(--muted);
+  font-size: 13px;
+  animation: pulse 1s infinite;
+}
+.name-field {
+  display: block;
+  margin-top: 3px;
+  margin-bottom: 22px;
+}
+.name-field > span {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 650;
+  margin-bottom: 9px;
+}
+.name-field small {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.name-field > div {
+  position: relative;
+}
+.name-field input {
+  width: 100%;
+  height: 43px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0 45px 0 12px;
+  font-size: 12px;
+}
+.name-field > div > span {
+  position: absolute;
+  right: 11px;
+  top: 15px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.generation-action {
+  margin-top: auto;
+  padding-top: 25px;
+}
+.primary-button,
+.secondary-button {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 45px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+  padding: 10px 16px;
+}
+.primary-button {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 1px solid var(--accent);
+}
+.primary-button:hover:not(:disabled) {
+  background: #d3ff89;
+  box-shadow: 0 4px 20px #c4f76b19;
+}
+.primary-button:disabled {
+  background: var(--surface-raised);
+  border-color: var(--line);
+  color: var(--subtle);
+}
+.generation-action > p {
+  font-size: 10px;
+  color: var(--subtle);
+  text-align: center;
+  margin: 12px 0 0;
+}
+.secondary-button {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+.secondary-button:hover {
+  background: var(--surface-raised);
+  color: var(--text);
+}
+.generation-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #10180fe6;
+  backdrop-filter: blur(14px);
+  color: #e9efdf;
+}
+.generation-overlay > svg {
+  color: var(--accent);
+  animation: pulse 1.4s infinite;
+}
+.generation-overlay h3 {
+  font-size: 19px;
+  letter-spacing: -0.4px;
+  margin: 20px 0 0;
+}
+.generation-overlay p {
+  font-size: 12px;
+  color: #b7c1a7;
+  margin-top: 10px;
+}
+.progress-track {
+  width: 160px;
+  height: 3px;
+  background: #3c4533;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.progress-track > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  transition: transform 0.2s;
+}
+.scanning-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c4f76b, transparent);
+  animation: scan 2s ease-in-out infinite;
+}
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  z-index: 30;
+  font-size: 13px;
+  animation: fade-in 0.25s;
+}
+.toast svg {
+  color: var(--accent);
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes scan {
+  to {
+    transform: translateY(620px);
+  }
+}
+@media (min-width: 1500px) {
+  main {
+    padding: 0 48px;
+  }
+  .site-header {
+    padding: 0 55px;
+  }
+}
+@media (max-width: 1150px) {
+  .site-header {
+    padding: 0 28px;
+    gap: 28px;
+  }
+  .site-header nav {
+    gap: 22px;
+  }
+  main {
+    padding: 0 28px;
+  }
+}
+@media (max-width: 900px) {
+  .site-header {
+    gap: 25px;
+  }
+  .site-header nav {
+    gap: 20px;
+  }
+  .header-actions {
+    gap: 5px;
+  }
+}
+@media (max-width: 650px) {
+  .site-header {
+    height: 65px;
+    padding: 0 20px;
+    gap: 20px;
+  }
+  .brand img {
+    width: 89px;
+  }
+  .site-header nav {
+    gap: 0;
+  }
+  .site-header nav > a:not(.nav-current) {
+    display: none;
+  }
+  main {
+    padding: 0 20px;
+  }
+  footer {
+    font-size: 10px;
+    display: block;
+    line-height: 1.7;
+  }
+  footer > a {
+    margin-top: 10px;
+  }
+  .generation-action {
+    padding-top: 20px;
+  }
+  .photo-uploader {
+    min-height: 117px;
+  }
+  .photo-uploader > button {
+    height: 117px;
+  }
+  .toast {
+    bottom: 15px;
+    width: max-content;
+    max-width: calc(100vw - 30px);
+    font-size: 11px;
+    padding: 12px 16px;
+  }
+  .generation-overlay h3 {
+    font-size: 15px;
+  }
+  .generation-overlay > svg {
+    width: 28px;
+    height: 28px;
+  }
+  .generation-overlay p {
+    font-size: 10px;
+  }
+  .progress-track {
+    margin-top: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+  *,
+  *:before,
+  *:after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Shared placeholder treatment across search, forms and creation controls. */
+[placeholder]::placeholder {
+  color: var(--text);
+  opacity: 0.3;
+}

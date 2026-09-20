@@ -1,1 +1,24 @@
-{"name":"meshy-creative-lab-prototype","version":"0.1.0","private":true,"type":"module","scripts":{"dev":"vite --host 127.0.0.1 --port 5186 --strictPort","build":"vite build","preview":"vite preview --host 127.0.0.1 --port 4173 --strictPort","test":"node --test src/*.test.js"},"dependencies":{"@fontsource-variable/manrope":"^5.3.0","@phosphor-icons/react":"^2.1.10","gsap":"^3.15.0","ogl":"^1.0.11","react":"^19.1.0","react-dom":"^19.1.0","three":"^0.186.0"},"devDependencies":{"vite":"^7.0.0"}}
+{
+  "name": "meshy-creative-lab-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5186 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@phosphor-icons/react": "^2.1.10",
+    "gsap": "^3.15.0",
+    "ogl": "^1.0.11",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}
