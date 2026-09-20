@@ -8,7 +8,7 @@
 
 实际投入约 **3–4 天**，AI 工具为 **Codex**。交付包括 1440px 桌面页面、移动端适配、深浅主题和可运行原型。
 
-[代码仓库](https://github.com/RongzhangGu/meshy-test) · [提交版本 fd45bc0](https://github.com/RongzhangGu/meshy-test/tree/fd45bc09f87f7dc01f722dde6dff0967d8388e67)
+[代码仓库](https://github.com/RongzhangGu/meshy-test) · [最新版本 main](https://github.com/RongzhangGu/meshy-test/tree/main)
 
 ![配图 01：Creative Lab 首屏与展开后的 Browse Creations](submission-assets/figure-01-hero-to-catalog.png)
 
@@ -79,9 +79,9 @@ Business 表单同步调整了输入框填充色、文字颜色和控件层级�
 | 选择控件 | 分类、数量和参数选项显示当前选中项 | Default、Selected、Hover、Focus、Disabled |
 | 作品卡片 | 物件占主要面积，名称和操作入口位置固定 | Default、Hover、Keyboard focus、Touch |
 
-![配图 04：深浅主题、工作区控件与订单状态组件](submission-assets/figure-04-design-system.png)
+![配图 04：深色主题下的首屏、Business 表单、工作区控件与订单状态组件](submission-assets/figure-04-design-system.png)
 
-*配图 04 · 深浅主题共用相同的信息层级，绿色集中承担主操作、选择和状态反馈。*
+*配图 04 · 深色主题以低明度表面建立层级，绿色集中承担主操作、选择和状态反馈。*
 
 ### 关键界面状态
 
